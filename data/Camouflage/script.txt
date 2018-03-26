@@ -1,9 +1,0 @@
-Person walks in front of computer monitor with interference bars
-00000 - start
-00241 - Brian enters scene
-00280 - Brian leaves scene
-
-Test
-00000 - 00199 Train
-00200 - 00251 Run
-00251 Evaluate

@@ -25,6 +25,7 @@ from scipy.sparse.linalg import svds
 def pcp(M, delta=1e-6, mu=None, maxiter=500, verbose=False, missing_data=True,
         svd_method="approximate", **svd_args):
     # Check the SVD method.
+    print("delta is:", delta)
     allowed_methods = ["approximate", "exact", "sparse"]
     if svd_method not in allowed_methods:
         raise ValueError("'svd_method' must be one of: {0}"
@@ -89,6 +90,7 @@ def pcp(M, delta=1e-6, mu=None, maxiter=500, verbose=False, missing_data=True,
 
     if i >= maxiter:
         logging.warn("convergence not reached in pcp")
+
     return L, S, (u, s, v)
 
 

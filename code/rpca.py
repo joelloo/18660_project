@@ -73,6 +73,8 @@ class RPCA():
             Ek = Enext
             Ek_1 = Ek
 
+            print("Iterations: " + repr(iters) + "; error: " + repr(Snext))
+
             iters += 1
 
         self.L_ = Ak
@@ -115,7 +117,11 @@ class RPCA():
 
             Y = Y + mu * (D-A-E)
             mu = rho * mu
+
+            print("Iterations: " + repr(iters) + "; error: " + repr(np.linalg.norm(D-A-E, 'fro')))
+            
             iters += 1
+
 
         self.L_ = A
         self.S_ = E
@@ -150,8 +156,8 @@ class RPCA():
 
             iters += 1
             diff = np.linalg.norm(M-L-S, 'fro')
-            if iters % 100 == 0:
-                print "Passed " + str(iters) + " iterations: " + str(diff)
+            # if iters % 100 == 0:
+            print "Passed " + str(iters) + " iterations: " + str(diff)
 
         self.L_ = L
         self.S_ = S

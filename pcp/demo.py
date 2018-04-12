@@ -12,11 +12,10 @@ def bitmap_to_mat(bitmap_seq):
     """from blog.shriphani.com"""
     matrix = []
     shape = None
-    print(len(bitmap_seq))
+    print("Number of frames:", len(bitmap_seq))
     for bitmap_file in bitmap_seq:
         # img = Image.open(bitmap_file).convert("L") %% rgb convert to gray
         img = Image.open(bitmap_file)
-        print(img.size)
         if shape is None:
             shape = img.size
         assert img.size == shape
@@ -44,9 +43,8 @@ if __name__ == "__main__":
         print("passed")
         sys.exit(0)
 
-    M, shape = bitmap_to_mat(glob.glob("test_data/traffic/*.jpg")[:2000:2])
-    print(M.shape)
-    L, S, (u, s, v) = pcp(M, maxiter=100, verbose=True, svd_method="exact")
+    M, shape = bitmap_to_mat(glob.glob("../data/frames/traffic/*.jpg")[:2000:1])
+    L, S, (u, s, v) = pcp(M, delta = 1e-7, maxiter=100, verbose=True, svd_method="approximate")
 
     fig, axes = pl.subplots(1, 3, figsize=(10, 4))
     fig.subplots_adjust(left=0, right=1, hspace=0, wspace=0.01)
@@ -57,4 +55,4 @@ if __name__ == "__main__":
         axes[1].set_title("low rank")
         do_plot(axes[2], S[i], shape)
         axes[2].set_title("sparse")
-        fig.savefig("results/{0:05d}.png".format(i))
+        fig.savefig("../data/results/traffic/{0:05d}.png".format(i))

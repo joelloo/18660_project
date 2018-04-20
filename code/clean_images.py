@@ -1,13 +1,17 @@
 import numpy as np
 from skimage import io
+from skimage import color
 from rpca import *
 import matplotlib.pyplot as plt
 
-face_s1 = io.imread("/Users/joel/Documents/Spring 18/18660/project/data/yalefaces/subject01.leftlight")
-rpca = RPCA(face_s1)
-#rpca.rpca_ialm()
+# face_s1 = io.imread("../data/yalefaces/subject01.leftlight")
+img = io.imread("../data/test/shot.jpg")
+img = color.rgb2gray(img);
+print img.shape
+rpca = RPCA(img)
+rpca.rpca_ialm()
 #rpca.rpca_ealm()
-rpca.rpca_apg()
+# rpca.rpca_apg()
 
 L_s1 = rpca.L_
 S_s1 = rpca.S_

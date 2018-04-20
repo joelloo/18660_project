@@ -19,3 +19,4 @@ Current dependencies:
 * Scikit-image
 * Scipy
 * Matplotlib
+* Cvxpy

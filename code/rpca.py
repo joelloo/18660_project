@@ -150,8 +150,11 @@ class RPCA():
 
             iters += 1
             diff = np.linalg.norm(M-L-S, 'fro')
+            """
             if iters % 100 == 0:
                 print "Passed " + str(iters) + " iterations: " + str(diff)
+            """
+            print "Passed " + str(iters) + " iterations: " + str(diff)
 
         self.L_ = L
         self.S_ = S

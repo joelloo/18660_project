@@ -160,6 +160,7 @@ $. The first minimization is recognizable as a rank-constrained least squares pr
 \subsection{Online RPCA via stochastic optimization (STOC-RPCA)}
 \subsection{Incremental Fixed-rank RPCA}
 \subsection{Comparison}
+\includegraphics[scale=0.5]{montage_fpcp.png}
 
 \section{Next steps}
 We have two primary goals going forward. Firstly, we want to perform more detailed benchmarking, analysis and comparison of the algorithms we have presently implemented. In particular, we want to test our algorithms on a wider variety of video streams (e.g. videos with larger images, longer videos etc.) to observe how the algorithms scale and how close the algorithms can get to real-time performance. Additionally, we could improve on the way in which we currently benchmark the quality of the low-rank and sparse separation. This is currently done by visual inspection of the results of our implementations when applied to specularity removal or background subtraction. While we are able to get a general sense of how performant our algorithm is from this, we would like to take a more quantifiable approach. We could do this by generating low-rank data and corrupting it with arbitrary sparse data and quantifying the separation by seeing if the algorithm is able to return a rank close to that of our artificial low-rank data, and also by computing the distance of the computed low-rank and sparse matrices from our artificially created low-rank and sparse matrices using the Frobenius norm or some other metric.\newline\newline

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.8)  21 APR 2018 00:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.8)  21 APR 2018 09:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -236,26 +236,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 148--160
 
  []
 
+<montage_fpcp.png, id=16, 462.528pt x 346.896pt>
+File: montage_fpcp.png Graphic file (type png)
+ <use montage_fpcp.png>
+Package pdftex.def Info: montage_fpcp.png used on input line 163.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--169
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 166--170
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--169
+Underfull \hbox (badness 10000) in paragraph at lines 166--170
 
  []
 
-[2] [3]
+[3 <./montage_fpcp.png>]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no “ in font cmr10!
  [4] (./progress_report.aux) ) 
 Here is how much of TeX's memory you used:
- 2194 strings out of 494437
- 30214 string characters out of 6166646
- 100246 words of memory out of 5000000
- 5522 multiletter control sequences out of 15000+600000
+ 2200 strings out of 494437
+ 30317 string characters out of 6166646
+ 94246 words of memory out of 5000000
+ 5526 multiletter control sequences out of 15000+600000
  7556 words of font info for 29 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  39i,13n,25p,1368b,166s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -271,10 +277,10 @@ sic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texlive/20
 17basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
 e/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
 live/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on progress_report.pdf (4 pages, 133879 bytes).
+Output written on progress_report.pdf (4 pages, 282358 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 64 PDF objects out of 1000 (max. 8388607)
+ 44 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

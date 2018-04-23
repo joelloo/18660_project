@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  22 APR 2018 22:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  22 APR 2018 23:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**copyversion.tex
-(./copyversion.tex
+**progress_report.tex
+(./progress_report.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
@@ -124,8 +124,8 @@ Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 \c@lecnum=\count100
 \c@theorem=\count101
 
-No file copyversion.aux.
-\openout1 = `copyversion.aux'.
+(./progress_report.aux)
+\openout1 = `progress_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
@@ -139,6 +139,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
+
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count102
@@ -223,81 +224,90 @@ Underfull \hbox (badness 10000) in paragraph at lines 118--120
 [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (33.0028pt too wide) in paragraph at lines 148--160
+Overfull \hbox (33.0028pt too wide) in paragraph at lines 148--161
 \OML/cmm/m/it/10 L[] \OT1/cmr/m/n/10 = [][]$ and $\OML/cmm/m/it/10 S[] \OT1/cmr
 /m/n/10 = [][]$.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 148--160
+Underfull \hbox (badness 10000) in paragraph at lines 148--161
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 148--160
+Underfull \hbox (badness 10000) in paragraph at lines 162--164
 
  []
 
-[2] <montage_fpcp.png, id=20, 462.528pt x 346.896pt>
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 166--168
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--171
+
+ []
+
+<montage_fpcp.png, id=20, 462.528pt x 346.896pt>
 File: montage_fpcp.png Graphic file (type png)
  <use montage_fpcp.png>
-Package pdftex.def Info: montage_fpcp.png used on input line 182.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
+Package pdftex.def Info: montage_fpcp.png used on input line 173.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-[3] <compare.png, id=25, 462.528pt x 346.896pt>
-File: compare.png Graphic file (type png)
- <use compare.png>
-Package pdftex.def Info: compare.png used on input line 184.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
+[3] <face.png, id=27, 462.528pt x 346.896pt>
+File: face.png Graphic file (type png)
+ <use face.png>
+Package pdftex.def Info: face.png used on input line 175.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-<timecost.png, id=26, 462.528pt x 346.896pt>
-File: timecost.png Graphic file (type png)
- <use timecost.png>
-Package pdftex.def Info: timecost.png used on input line 186.
-(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
+<highway.png, id=28, 462.528pt x 346.896pt>
+File: highway.png Graphic file (type png)
+ <use highway.png>
+Package pdftex.def Info: highway.png used on input line 177.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 192--196
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 192--196
+Underfull \hbox (badness 10000) in paragraph at lines 180--183
 
  []
 
-[4 <./montage_fpcp.png> <./compare.png> <./timecost.png>]
-Missing character: There is no Ã in font cmr10!
-Missing character: There is no ¢ in font cmr10!
-Missing character: There is no Â in font cmr10!
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--183
+
+ []
+
+[4 <./montage_fpcp.png> <./face.png> <./highway.png>]
+Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
-Missing character: There is no Â in font cmr10!
 Missing character: There is no “ in font cmr10!
- [5]
-(./copyversion.aux) ) 
+ [5] [6]
+(./progress_report.aux) ) 
 Here is how much of TeX's memory you used:
- 2208 strings out of 492995
- 30072 string characters out of 6132704
- 97939 words of memory out of 5000000
- 5742 multiletter control sequences out of 15000+600000
- 7556 words of font info for 29 fonts, out of 8000000 for 9000
+ 2214 strings out of 492995
+ 30158 string characters out of 6132704
+ 102939 words of memory out of 5000000
+ 5744 multiletter control sequences out of 15000+600000
+ 8175 words of font info for 31 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,13n,25p,1364b,166s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
+ 39i,13n,25p,1466b,166s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr5.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmr7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cms
 l10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
 10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7
 .pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.
 pfb>
-Output written on copyversion.pdf (5 pages, 409850 bytes).
+Output written on progress_report.pdf (6 pages, 769835 bytes).
 PDF statistics:
- 71 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
+ 82 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

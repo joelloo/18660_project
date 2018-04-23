@@ -57,7 +57,8 @@ im_sp_esc = resize(S[:,49].reshape(wd,ht).T, (dim,dim))
 
 # Test on traffic data
 data = sio.loadmat('../data/escalator_data.mat')
-M = data['X'][:,:51]
+#M = data['X'][:,:51]
+M = data['X']
 ht = np.asscalar(data['m'])
 wd = np.asscalar(data['n'])
 

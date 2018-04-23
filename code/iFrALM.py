@@ -102,8 +102,3 @@ def soft_thresh(eps, M) :
     return sgn * S
 
 
-
-
-
-
-

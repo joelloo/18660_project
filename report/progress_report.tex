@@ -165,19 +165,7 @@ Before introducing the iFrALM algorithm, we would like to introduce the iSVD(inc
 \begin{align*}
 \text{Given A $ \in R^{m \times n}$ is the original term document matrix and } A_k &= P_k \Sigma_k Q_k^T \\ \text{Let D $\in R^{m \times p}$ Compute the best rank-k approximation of} B &\equiv [A_k, D]
 \end{align*}
-And the specified updated algorithm is formulated as:
-
-Let QR decomposition of $(I - P_k P_k^T)$ be
-\[ (I- P_kP^T_k)D = \hat{P}_k R \]
-where $\hat{P_k}$ is the orthonormal and the R is upper triangle, then
-\[B \equiv [A_k, D] = [P_k, \hat{P}_k] \begin{bmatrix}\Sigma_k & P^T_k D \\ 0 & R\end{bmatrix} 
-                        \begin{bmatrix}Q_k^T & 0 \\ 0 & I_p \end{bmatrix}\]
-Then the SVD of
-\[ \hat{B} \equiv \begin{bmatrix} \Sigma & P^T_k D \\ 0 & R \end{bmatrix} = [U_k, U_k^{\perp}] 
-                  \begin{bmatrix} \hat{\Sigma}_k & 0 \\ 0 & \hat{\Sigma}_p \end{bmatrix} [V_k, V_k^{\perp}] \]
-So that we get the updated incremental SVD:
-\[B_k \equiv ([P_k, \hat{P}_k] U_k) \hat{\Sigma}_k 
-                                (\begin{bmatrix} Q^k & 0 \\ 0 & I_p \end{bmatrix} V_k)^T\]
+More details can be found in Zha's paper.
 In FrALM, the robust problem is formulated as:
 \[\min\limits_{A,E}{\|E\|_F}, \text{subject to rank(A) = known r, D = A + E}\]
 $\|\dot\|_F$ is the Frobenius norm, D is the original matrix, A and E are priciple data matrix and sparse data matrix. FrALM uses SVD to minimize the equation with A being factorized as $A = U^r S^r {V^r}^T$.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.8)  22 APR 2018 22:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.8)  22 APR 2018 22:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -236,26 +236,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 162--164
 
  []
 
-[2] <montage_fpcp.png, id=20, 462.528pt x 346.896pt>
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 166--169
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 181--183
+
+ []
+
+[3] <montage_fpcp.png, id=25, 462.528pt x 346.896pt>
 File: montage_fpcp.png Graphic file (type png)
  <use montage_fpcp.png>
-Package pdftex.def Info: montage_fpcp.png used on input line 166.
+Package pdftex.def Info: montage_fpcp.png used on input line 185.
 (pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--172
+Underfull \hbox (badness 10000) in paragraph at lines 188--191
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--172
+Underfull \hbox (badness 10000) in paragraph at lines 188--191
 
  []
 
-[3 <./montage_fpcp.png>]
+[4 <./montage_fpcp.png>]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no “ in font cmr10!
- [4] [5] (./progress_report.aux) ) 
+ [5] (./progress_report.aux) ) 
 Here is how much of TeX's memory you used:
  2204 strings out of 494437
  30355 string characters out of 6166646
@@ -264,21 +274,21 @@ Here is how much of TeX's memory you used:
  8175 words of font info for 31 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  39i,13n,25p,1466b,166s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017basic/texmf-dist/font
-s/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017basic/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017basic/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017basic/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017basic
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017ba
-sic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/201
-7basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/
-2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texliv
-e/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
-ive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/
-texlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
-cal/texlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr
-/local/texlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on progress_report.pdf (5 pages, 303431 bytes).
+</usr/local/texlive/2017basic/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017basic/texmf-dist/font
+s/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017basic/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017basic/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017basic/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017basic/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017bas
+ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017
+basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/20
+17basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/
+2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texl
+ive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
+texlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loc
+al/texlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on progress_report.pdf (5 pages, 309442 bytes).
 PDF statistics:
  75 PDF objects out of 1000 (max. 8388607)
  52 compressed objects within 1 object stream

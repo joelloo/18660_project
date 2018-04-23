@@ -161,7 +161,26 @@ The algorithm derived from this reformulation of the PCP objective is exceedingl
 \subsection{Online RPCA via stochastic optimization (STOC-RPCA)}
 The previous two methods can only be applied to video streams if we already have the entire video. In contrast, STOC-RPCA is an online algorithm that can take each incoming frame, and incrementally improve the low-rank and sparse separation. STOC-RPCA uses the original formulation of PCP, but combines the $L+S=M$ constraint into the objective as the penalty $\frac{1}{2}\lVert M-L-S\rVert_{2}^{2}$. In addition, it expresses the nuclear norm as $\inf\limits_{L,R}\{\frac{1}{2}\lVert L\rVert_{F}^{2} +\frac{1}{2}\lVert R\rVert_{F}^{2}: X = LR^{T}\}$, where $L$ can be thought of as a fixed basis. Substituting this back into objective expression and converting into a form that takes each column vector of $R$ and $S$ (corresponding to each video frame) as arguments, we have $\frac{1}{t}\sum_{i=1}^{t}(\frac{1}{2}\lVert \textbf{m}_{i} - L\textbf{r}_{i} - \textbf{s}_{i}\rVert_{2}^{2} +\frac{\lambda_{1}}{2}\lVert \textbf{r}_{i}\rVert^{2}_{2} +\lambda_{2}\lVert \textbf{s}_{i}\rVert_{1}) + \frac{\lambda_{1}}{2t}\lVert L\rVert_{F}^{2}$. This can be solved through a alternating minimization type algorithm, where we first minimize the objective with respect to $\textbf{r}_{i}, \textbf{s}_{i}$, then update the basis $L$ using these vectors.\newline\newline
 The paper recommended solving the first minimization to find $\textbf{r}_{i}, \textbf{s}_{i}$ using standard available solvers. Since the first minimization is essentially a convex problem, we attempted to find a solution using CVXPY. However, this yielded poor results for reasons that we are still exploring, and the overhead from CVXPY made it relatively slower compared to our final solution. Our final solution was to take an alternating minimization method, where we would first update $\textbf{r}_{i}$, then update $\textbf{s}_{i}$. Since the objective with respect to $\textbf{r}_{i}$ is fully differentiable, we can simply use the closed-form partial derivative to compute the minimum for a given $\textbf{s}_{i}$. We then minimize $\textbf{s}_{i}$ using proximal gradient descent, since it contains the nondifferentiable L1 norm. Once we have computed $\textbf{r}_{i}, \textbf{s}_{i}$, we can update the basis $L$ using coordinate descent as suggested by the paper. While this might seem like a computationally intensive approach (especially since we have proximal gradient descent nested inside two outer layers of alternating minimization), we have found that in practice this approach seems to converge fast and works close to real-time. This is especially the case since we have noted that large fixed step sizes yield acceptable results and the proximal method requires few iterations to get close to convergence.
- \subsection{Incremental Fixed-rank RPCA}
+
+\subsection{Incremental Fixed-rank RPCA}
+In a similar vein to STOC-RPCA, Jian et al [6] presented iFrALM (incremental fixed-rank ALM), which allows RPCA to be applied to frames in an initial batch, and also allows the low-rank and sparse separation to be updated incrementally. The algorithm will only save fixed-rank components of initial batch and the incremental batch.\newline\newline
+iFrALM is based on an incremental SVD (iSVD) algorithm. iSVD is a method to update the matrix's SVD with newly-added part based on the original matrix's SVD, to update the matrix's SVD with newly-added columns. iFrALM implements the iSVD method presented by Zha [7].
+Let QR decomposition of $(I - P_k P_k^T)$ be
+\[ (I- P_kP^T_k)D = \hat{P}_k R \]
+where $\hat{P_k}$ is the orthonormal and the R is upper triangle, then
+\[B \equiv [A_k, D] = [P_k, \hat{P}_k] \begin{bmatrix}\Sigma_k & P^T_k D \\ 0 & R\end{bmatrix} 
+                        \begin{bmatrix}Q_k^T & 0 \\ 0 & I_p \end{bmatrix}\]
+Then the SVD of
+\[ \hat{B} \equiv \begin{bmatrix} \Sigma & P^T_k D \\ 0 & R \end{bmatrix} = [U_k, U_k^{\perp}] 
+                  \begin{bmatrix} \hat{\Sigma}_k & 0 \\ 0 & \hat{\Sigma}_p \end{bmatrix} [V_k, V_k^{\perp}] \]
+So that we get the updated incremental SVD:
+\[B_k \equiv ([P_k, \hat{P}_k] U_k) \hat{\Sigma}_k 
+                                (\begin{bmatrix} Q^k & 0 \\ 0 & I_p \end{bmatrix} V_k)^T\]
+
+
+In iFrRPCA, D is seperated into initial batch $D_0$  and incremental batches $D_1, D_2, D_i, \cdots$. Then following the FrALM, we can solve each batch size and get the principle component of A: $A_{i- 1} = U_{i-1} S_{i-1} V^T_{i-1}$, pass the $A_{i-1}$ into next problem, that is to minimize E with $D = [A_{i -1}, D_i]$. In the new problem, iSVD will help us to get the new SVD update with both efficient computation and memory.\newline\newline
+However, during the implementation, because the author did not give an explict convergence condition along with the parameters used in the algorithm, although we have built the programming structure, it takes time to test out proper parameters. Another problem during the implementation is that video frames usually have a large size.
+
 \subsection{Preliminary comparisons}
 \includegraphics[scale=0.5]{montage_fpcp.png}
 
@@ -181,6 +200,10 @@ no. 3, May 2011.
 [4] \hspace*{8pt}Guyon, C., Bouwmans, T., and Zahzah, E. (2012). Robust Principal Component Analysis for Background Subtraction: Systematic Evaluation and Comparative Analysis.
 
 [5] \hspace*{8pt}Lin, Z., Ganesh, A., Wright, J., Wu, L., Chen, M., and Ma, Y. (2009). Fast convex optimization algorithms for exact recovery of a corrupted low-rank matrix. Intl. Workshop on Comp. Adv. in Multi-Sensor Adapt. Processing, Aruba, Dutch Antilles.
+
+[6] \hspace*{8pt}Jian Lai, Wee Kheng Leow, Terence Sim (2015). Incremental Fixed-Rank Robust PCA for Video Backgroud Recovery
+
+[7] \hspace*{8pt}Hongyuan Zha, Horst D. Simon (1999). On Updating Problems in Latent Semantic Indexing
 
 
 \end{document}

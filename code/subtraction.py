@@ -183,9 +183,15 @@ if __name__ == "__main__":
         ax[2, 2].get_xaxis().set_visible(False)
         ax[2, 2].get_yaxis().set_visible(False)
 
+        
+        time_compare = plt.figure()
+        plt.plot([0, 1, 2],[time_lasting1, time_lasting2, time_lasting3], 'go')
+        plt.xlabel('method')
+        plt.ylabel('time (s)')
+        plt.title('Time cost comparision repectivly for APG, EALM, IALM')
+        # time_compare.set_title('Time constrast repectivly for APG, EALM, IALM')
+
         plt.show()
-        # plt.figure()
-        # plt.plot
 
 
 

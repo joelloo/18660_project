@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  22 APR 2018 23:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  22 APR 2018 23:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -253,19 +253,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 169--171
 File: montage_fpcp.png Graphic file (type png)
  <use montage_fpcp.png>
 Package pdftex.def Info: montage_fpcp.png used on input line 173.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
 
 [3] <face.png, id=27, 462.528pt x 346.896pt>
 File: face.png Graphic file (type png)
  <use face.png>
 Package pdftex.def Info: face.png used on input line 175.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
 
 <highway.png, id=28, 462.528pt x 346.896pt>
 File: highway.png Graphic file (type png)
  <use highway.png>
 Package pdftex.def Info: highway.png used on input line 177.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+(pdftex.def)             Requested size: 185.0079pt x 138.75594pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 180--183
 
@@ -280,7 +280,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 180--183
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no “ in font cmr10!
- [5] [6]
+ [5]
 (./progress_report.aux) ) 
 Here is how much of TeX's memory you used:
  2214 strings out of 492995
@@ -304,10 +304,10 @@ l10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
 10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7
 .pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.
 pfb>
-Output written on progress_report.pdf (6 pages, 769835 bytes).
+Output written on progress_report.pdf (5 pages, 769632 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 54 compressed objects within 1 object stream
+ 79 PDF objects out of 1000 (max. 8388607)
+ 52 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

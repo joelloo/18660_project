@@ -170,11 +170,11 @@ In iFrALM, D is seperated into initial batch $D_0$  and incremental batches $D_1
 However, during the implementation, because the author did not give an explict convergence condition along with the parameters used in the algorithm, although we have built the programming structure, it takes time to test out proper parameters. Another problem during the implementation is that video frames usually have a large size.
 
 \subsection{Preliminary comparisons}
-\includegraphics[scale= 0.5]{montage_fpcp.png}
+\includegraphics[scale= 0.4]{montage_fpcp.png}
 
-\includegraphics[scale =0.5]{face.png}
+\includegraphics[scale =0.4]{face.png}
 
-\includegraphics[scale =0.5]{highway.png}
+\includegraphics[scale =0.4]{highway.png}
 
 \section{Next steps}
 We have two primary goals going forward. Firstly, we want to perform more detailed benchmarking, analysis and comparison of the algorithms we have presently implemented. In particular, we want to test our algorithms on a wider variety of video streams (e.g. videos with larger images, longer videos etc.) to observe how the algorithms scale and how close the algorithms can get to real-time performance. Additionally, we could improve on the way in which we currently benchmark the quality of the low-rank and sparse separation. This is currently done by visual inspection of the results of our implementations when applied to specularity removal or background subtraction. While we are able to get a general sense of how performant our algorithm is from this, we would like to take a more quantifiable approach. We could do this by generating low-rank data and corrupting it with arbitrary sparse data and quantifying the separation by seeing if the algorithm is able to return a rank close to that of our artificial low-rank data, and also by computing the distance of the computed low-rank and sparse matrices from our artificially created low-rank and sparse matrices using the Frobenius norm or some other metric.\newline\newline

@@ -118,8 +118,9 @@ class RPCA():
             Y = Y + mu * (D-A-E)
             mu = rho * mu
 
-            print("Iterations: " + repr(iters) + "; A matrix error: " + repr(np.linalg.norm(Anext-A, 'fro')) 
-                + "; E matrix error: " + repr(np.linalg.norm(Enext-E, 'fro')))
+            err = np.sqrt(np.linalg.norm(Enext-E, 'fro') ** 2 + np.linalg.norm(Anext-A, 'fro') ** 2)
+
+            print("Iterations: " + repr(iters) + "error: " + repr(err))
             iters += 1
 
 
@@ -179,15 +180,19 @@ def svt(X, tau):
     minsq = min(m,n)
 
     
-    U, S, V = np.linalg.svd(X)
-    thresh = np.maximum(S - tau, 0)
-    smat = np.zeros((m,n))
-    smat[:minsq, :minsq] = np.diag(thresh)
-
-    return np.dot(U, np.dot(smat, V))
-
-    # U, S, V = np.linalg.svd(X, full_matrices = False)
+    # U, S, V = np.linalg.svd(X)
     # thresh = np.maximum(S - tau, 0)
-    # return np.dot(U * thresh, V)
+    # smat = np.zeros((m,n))
+    # smat[:minsq, :minsq] = np.diag(thresh)
+
+    # return np.dot(U, np.dot(smat, V))
+
+    U, S, V = np.linalg.svd(X, full_matrices = False)
+    thresh = np.maximum(S - tau, 0)
+    # print(U)
+    # print(S)
+    # print(tau)
+    # print(U * thresh)
+    return np.dot(U * thresh, V)
 
 

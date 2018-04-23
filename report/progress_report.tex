@@ -159,6 +159,35 @@ $ and $S_{k+1} = \begin{aligned}
 $. The first minimization is recognizable as a rank-constrained least squares problem, for which the canonical solution is to compute the partial SVD, i.e. $L_{k+1} = u*s*vt$, where $u$ is the first $t$ columns of $U$, $s$ is the first square submatrix of $\Sigma$ of dimension $t$, $vt$ is the first $t$ rows of $V^{T}$ and  $M-S_{k} = U\Sigma V^{T}$. We used scikit-learn's randomized\_svd function to compute the partial SVD in our implementation. The second minimization can be solved by direct application of the soft thresholding operator. The algorithm consists primarily of these two steps, where the main bottleneck is the SVD. Since we are only computing a partial SVD for only a small number of columns/rows (if we enforce low rank on $L$) this method is very fast in practice. To enforce low rank in $L$, we also implement a check, wherein we compute the contribution of each successive singular value, and stop increasing the rank when the singular value becomes too small.\newline\newline
 \subsection{Online RPCA via stochastic optimization (STOC-RPCA)}
 \subsection{Incremental Fixed-rank RPCA}
+As stated before, robust PCA solver can lead to exoensive computation without an efficient algorithm. Robust PCA's application to Video background recovery can also be impractical when the frames accumulate to the place where a computer's memory is hard to reach. To reduce the computation expense and to make online backgroung recovery pratical. Jian presented an algorithm called iFrALM (incremental fixed-rank ALM). The algorithm splits the frames into an initial batch and an incremental batch. The algorithm will only save fixed-rank components of initial batch and some more memory to save the incremental batch. Whena a new video frame batch arrives, the algorithm updates the principle component in an incremental way and therefore saves computation cost and memory cost.
+
+Before introducing the iFrALM algorithm, we would like to introduce the iSVD(incremental SVD) method first. This is what iFrALM is based on, as most robust PCA algorithms are based on SVD. Incremental SVD is a method to update the matrix's SVD with new-added part based on the original matrix's SVD, specially in video backgroud recovery, to update the matrix's SVD with new-added columns. Incremental FrALM implements the iSVD method presented by Zha. The problem si formulated as:
+\begin{align*}
+\text{Given A $ \in R^{m \times n}$ is the original term document matrix and } A_k &= P_k \Sigma_k Q_k^T \\ \text{Let D $\in R^{m \times p}$ Compute the best rank-k approximation of} B &\equiv [A_k, D]
+\end{align*}
+And the specified updated algorithm is formulated as:
+
+Let QR decomposition of $(I - P_k P_k^T)$ be
+\[ (I- P_kP^T_k)D = \hat{P}_k R \]
+where $\hat{P_k}$ is the orthonormal and the R is upper triangle, then
+\[B \equiv [A_k, D] = [P_k, \hat{P}_k] \begin{bmatrix}\Sigma_k & P^T_k D \\ 0 & R\end{bmatrix} 
+                        \begin{bmatrix}Q_k^T & 0 \\ 0 & I_p \end{bmatrix}\]
+Then the SVD of
+\[ \hat{B} \equiv \begin{bmatrix} \Sigma & P^T_k D \\ 0 & R \end{bmatrix} = [U_k, U_k^{\perp}] 
+                  \begin{bmatrix} \hat{\Sigma}_k & 0 \\ 0 & \hat{\Sigma}_p \end{bmatrix} [V_k, V_k^{\perp}] \]
+So that we get the updated incremental SVD:
+\[B_k \equiv ([P_k, \hat{P}_k] U_k) \hat{\Sigma}_k 
+                                (\begin{bmatrix} Q^k & 0 \\ 0 & I_p \end{bmatrix} V_k)^T\]
+In FrALM, the robust problem is formulated as:
+\[\min\limits_{A,E}{\|E\|_F}, \text{subject to rank(A) = known r, D = A + E}\]
+$\|\dot\|_F$ is the Frobenius norm, D is the original matrix, A and E are priciple data matrix and sparse data matrix. FrALM uses SVD to minimize the equation with A being factorized as $A = U^r S^r {V^r}^T$.
+
+In iFrRPCA, D is seperated into initial batch $D_0$  and incremental batches $D_1, D_2, D_i, \cdots$. Then following the FrALM, we can solve each batch size and get the principle component of A: $A_{i- 1} = U_{i-1} S_{i-1} V^T_{i-1}$, pass the $A_{i-1}$ into next problem, that is to minimize E with $D = [A_{i -1}, D_i]$. In the new problem, iSVD will help us to get the new SVD update with both efficient computation and memory.
+
+However, during the implementation, because the author did not give an explict convergence condition along with the parameters used in the algorithm, although we have built the programming structure, it takes time to test out proper parameters. Another problem during the implementation is that video frames usually have a large size. We spend some time and still need to spend more in solving this problem in folling steps. Even we meet some problems, these problems will just be a matter of time, knowing the reason behind these, we will solve these problems.
+
+
+
 \subsection{Comparison}
 \includegraphics[scale=0.5]{montage_fpcp.png}
 

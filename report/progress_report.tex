@@ -169,12 +169,14 @@ iFrALM is based on an incremental SVD (iSVD) algorithm. iSVD is a method to upda
 In iFrALM, D is seperated into initial batch $D_0$  and incremental batches $D_1, D_2, D_i, \cdots$. Then following the FrALM, we can solve each batch size and get the principle component of A: $A_{i- 1} = U_{i-1} S_{i-1} V^T_{i-1}$, pass the $A_{i-1}$ into next problem, that is to minimize E with $D = [A_{i -1}, D_i]$. In the new problem, iSVD will help us to get the new SVD update with both efficient computation and memory.\newline\newline
 However, during the implementation, because the author did not give an explict convergence condition along with the parameters used in the algorithm, although we have built the programming structure, it takes time to test out proper parameters. Another problem during the implementation is that video frames usually have a large size.
 
-\subsection{Preliminary comparisons}
-\includegraphics[scale= 0.5]{montage_fpcp.png}
-
-\includegraphics[scale =0.5]{face.png}
-
+\subsection{Preliminary results and comparisons}
+\includegraphics[scale =0.5]{face.png}\newline
+As shown in the figure above, we were able to achieve relatively similar results in terms of specularity/non-Lambertian distortion removal from images. Since faces are generally good approximations of Lambertian surfaces, the specularities and distortions caused by lighting can be removed as sparse noise, using the accelerated proximal gradient, exact and inexact Augmented Lagrange Multiplier methods. This is relatively close to results shown in demonstrations by UIUC's Perception group.\newline
 \includegraphics[scale =0.5]{highway.png}
+\includegraphics[scale= 0.5]{montage_fpcp.png}\newline
+Here, we provide a demonstration of some of the results on background recovery/subtraction in video streams using standard RPCA algorithms along with Fast PCP. We observe good results on all these variants of RPCA, since the majority of the moving objects in the video streams are clearly identified and extracted in the sparse matrix. However, it should be noted that APG, EALM and IALM are significantly slower than Fast PCP, which runs in 0.7s on the highway dataset, and in slightly over a second on the escalator dataset. This is in contrast with the standard RPCA algorithms, which can take up to 9s. While STOC-RPCA is not as fast as Fast PCP when run over all frames of the video stream, STOC-RPCA nevertheless provides an incremental approach to updating the low-rank and sparse decomposition that approaches real-time.
+
+
 
 \section{Next steps}
 We have two primary goals going forward. Firstly, we want to perform more detailed benchmarking, analysis and comparison of the algorithms we have presently implemented. In particular, we want to test our algorithms on a wider variety of video streams (e.g. videos with larger images, longer videos etc.) to observe how the algorithms scale and how close the algorithms can get to real-time performance. Additionally, we could improve on the way in which we currently benchmark the quality of the low-rank and sparse separation. This is currently done by visual inspection of the results of our implementations when applied to specularity removal or background subtraction. While we are able to get a general sense of how performant our algorithm is from this, we would like to take a more quantifiable approach. We could do this by generating low-rank data and corrupting it with arbitrary sparse data and quantifying the separation by seeing if the algorithm is able to return a rank close to that of our artificial low-rank data, and also by computing the distance of the computed low-rank and sparse matrices from our artificially created low-rank and sparse matrices using the Frobenius norm or some other metric.\newline\newline

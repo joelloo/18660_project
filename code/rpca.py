@@ -102,7 +102,7 @@ class RPCA():
         stopInner = deltaProj * dnorm
 
         while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
-            print iters
+            # print iters
             converged = False
 
             while not converged:
@@ -118,8 +118,8 @@ class RPCA():
             Y = Y + mu * (D-A-E)
             mu = rho * mu
 
-            print("Iterations: " + repr(iters) + "; error: " + repr(np.linalg.norm(D-A-E, 'fro')))
-            
+            print("Iterations: " + repr(iters) + "; A matrix error: " + repr(np.linalg.norm(Anext-A, 'fro')) 
+                + "; E matrix error: " + repr(np.linalg.norm(Enext-E, 'fro')))
             iters += 1
 
 
@@ -178,11 +178,16 @@ def svt(X, tau):
     m,n = X.shape
     minsq = min(m,n)
 
+    
     U, S, V = np.linalg.svd(X)
     thresh = np.maximum(S - tau, 0)
     smat = np.zeros((m,n))
     smat[:minsq, :minsq] = np.diag(thresh)
 
     return np.dot(U, np.dot(smat, V))
+
+    # U, S, V = np.linalg.svd(X, full_matrices = False)
+    # thresh = np.maximum(S - tau, 0)
+    # return np.dot(U * thresh, V)
 
 

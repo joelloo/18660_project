@@ -189,10 +189,6 @@ def svt(X, tau):
 
     U, S, V = np.linalg.svd(X, full_matrices = False)
     thresh = np.maximum(S - tau, 0)
-    # print(U)
-    # print(S)
-    # print(tau)
-    # print(U * thresh)
     return np.dot(U * thresh, V)
 
 

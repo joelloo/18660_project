@@ -10,6 +10,7 @@ from skimage import io
 from rpca import *
 import iFrALM
 import scipy.io as sio
+from skimage import color
 
 
 
@@ -73,10 +74,17 @@ if __name__ == "__main__":
 
     alg = "all"
     # M, shape = bitmap_to_mat(glob.glob("../data/frames/traffic_downsampled/*.jpg")[:2000:1])
-    data = sio.loadmat('../data/demo_vid.mat')
-    M = data['M']
-    ht = np.asscalar(data['vh'])
-    wd = np.asscalar(data['vw'])
+    # data = sio.loadmat('../data/demo_vid.mat')
+    # M = data['M']
+    # ht = np.asscalar(data['vh'])
+    # wd = np.asscalar(data['vw'])
+    # img = io.imread("../data/yalefaces/subject01.leftlight")
+    # M = np.array(color.rgb2gray(img))
+    # wd, ht = M.shape
+    data = sio.loadmat('../data/escalator_data.mat')
+    M = data['X'][:,:51]
+    ht = np.asscalar(data['m'])
+    wd = np.asscalar(data['n'])
 
     lm = 1 / np.sqrt(max(M.shape))
     m,n = M.shape
@@ -128,19 +136,31 @@ if __name__ == "__main__":
         print("time of iFrALM optimization is", time_lasting)
 
     if alg == 'all' :
-        orig_demo = M[:,49].reshape(wd,ht).T
-        im_lr_demo1 = L1[:,49].reshape(wd,ht).T
-        im_sp_demo1 = S1[:,49].reshape(wd,ht).T
-        im_lr_demo2 = L2[:,49].reshape(wd,ht).T
-        im_sp_demo2 = S2[:,49].reshape(wd,ht).T
-        im_lr_demo3 = L3[:,49].reshape(wd,ht).T
-        im_sp_demo3 = S3[:,49].reshape(wd,ht).T
+        dim = max(wd,ht)
+        # orig_esc = resize(M[:,49].reshape(wd,ht).T, (dim,dim))
+        # im_lr_esc = resize(L[:,49].reshape(wd,ht).T, (dim,dim))
+        # im_sp_esc = resize(S[:,49].reshape(wd,ht).T, (dim,dim))
+        orig_demo = reshape(M[:,49].reshape(wd,ht).T, (dim, dim))
+        im_lr_demo1 = reshape(L1[:,49].reshape(wd,ht).T, (dim, dim))
+        im_sp_demo1 = reshape(S1[:,49].reshape(wd,ht).T, (dim, dim))
+        im_lr_demo2 = reshape(L2[:,49].reshape(wd,ht).T, (dim, dim))
+        im_sp_demo2 = reshape(S2[:,49].reshape(wd,ht).T, (dim, dim))
+        im_lr_demo3 = reshape(L3[:,49].reshape(wd,ht).T, (dim, dim))
+        im_sp_demo3 = reshape(S3[:,49].reshape(wd,ht).T, (dim, dim))
+
+        # orig_demo = M
+        # im_lr_demo1 = L1
+        # im_sp_demo1 = S1
+        # im_lr_demo2 = L2
+        # im_sp_demo2 = S2
+        # im_lr_demo3 = L3
+        # im_sp_demo3 = S3
 
         fig, ax = plt.subplots(3,3)
 
         ax[0, 0].imshow(orig_demo, cmap='gray')
         ax[0, 0].set_title('Original Using APG')
-        ax[0, 0].set_ylabel('Highway')
+        ax[0, 0].set_ylabel('Face')
         ax[0, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
 
         ax[0, 1].imshow(im_lr_demo1, cmap='gray')
@@ -155,7 +175,7 @@ if __name__ == "__main__":
 
         ax[1, 0].imshow(orig_demo, cmap='gray')
         ax[1, 0].set_title('Original Using EALM')
-        ax[1, 0].set_ylabel('Highway')
+        ax[1, 0].set_ylabel('Face')
         ax[1, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
 
         ax[1, 1].imshow(im_lr_demo2, cmap='gray')
@@ -170,7 +190,7 @@ if __name__ == "__main__":
 
         ax[2, 0].imshow(orig_demo, cmap='gray')
         ax[2, 0].set_title('Original Using IALM')
-        ax[2, 0].set_ylabel('Highway')
+        ax[2, 0].set_ylabel('face')
         ax[2, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
 
         ax[2, 1].imshow(im_lr_demo3, cmap='gray')
@@ -183,13 +203,6 @@ if __name__ == "__main__":
         ax[2, 2].get_xaxis().set_visible(False)
         ax[2, 2].get_yaxis().set_visible(False)
 
-        
-        time_compare = plt.figure()
-        plt.plot([0, 1, 2],[time_lasting1, time_lasting2, time_lasting3], 'go')
-        plt.xlabel('method')
-        plt.ylabel('time (s)')
-        plt.title('Time cost comparision repectivly for APG, EALM, IALM')
-        # time_compare.set_title('Time constrast repectivly for APG, EALM, IALM')
 
         plt.show()
 

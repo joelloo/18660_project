@@ -47,7 +47,6 @@ class RPCA():
         iters = 0
 
         while iters < maxIters and not converged:
-            print iters
             Y_Ak = Ak + (tk_1-1)/tk * (Ak - Ak_1)
             Y_Ek = Ek + (tk_1-1)/tk * (Ek - Ek_1)
 

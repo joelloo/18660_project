@@ -5,14 +5,13 @@ from __future__ import division, print_function
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-from PIL import Image
-from skimage import io
-from rpca import *
-import iFrALM
 import scipy.io as sio
 from skimage import color
-
-
+from skimage.transform import resize
+from sklearn.utils.extmath import randomized_svd
+from fralm import fralm
+from ifralm import ifralm
+from rpca import *
 
 def decode(M, method = "default"):
     rpca = RPCA(M);
@@ -31,9 +30,6 @@ def decode(M, method = "default"):
     elif method == "ialm":
         rpca.rpca_ialm();
         L, S = rpca.L_, rpca.S_;
-        return L,S
-    elif method == "iFrALM":
-        L, S = iFrALM(M, fixed_rank = 1);
         return L,S
 
 def bitmap_to_mat(bitmap_seq):
@@ -60,179 +56,47 @@ def do_plot(ax, img, shape):
 
 
 if __name__ == "__main__":
-    import sys
-    import glob
-    import matplotlib.pyplot as pl
 
-    if "--test" in sys.argv:
-        M = (10*np.ones((10, 10))) + (-5 * np.eye(10))
-        L, S, svd = pcp(M, verbose=True, svd_method="exact")
-        assert np.allclose(M, L + S), "Failed"
-        print("passed")
-        sys.exit(0)
+    data = sio.loadmat('../data/demo_vid.mat')
+    M = data['M']
+    ht = np.asscalar(data['vh'])
+    wd = np.asscalar(data['vw'])
 
+    # data = sio.loadmat('../data/escalator_data.mat')
+    # M = data['X'][:,:51]
+    # ht = np.asscalar(data['m'])
+    # wd = np.asscalar(data['n'])
 
-    alg = "all"
-    # M, shape = bitmap_to_mat(glob.glob("../data/frames/traffic_downsampled/*.jpg")[:2000:1])
-    # data = sio.loadmat('../data/demo_vid.mat')
-    # M = data['M']
-    # ht = np.asscalar(data['vh'])
-    # wd = np.asscalar(data['vw'])
-    # img = io.imread("../data/yalefaces/subject01.leftlight")
-    # M = np.array(color.rgb2gray(img))
-    # wd, ht = M.shape
-    data = sio.loadmat('../data/escalator_data.mat')
-    M = data['X'][:,:51]
-    ht = np.asscalar(data['m'])
-    wd = np.asscalar(data['n'])
-
-    lm = 1 / np.sqrt(max(M.shape))
     m,n = M.shape
-    if alg == 'all' :
+    dim = max(wd, ht)
 
-        start = time.time()
-        L1, S1 = decode(M, method = "apg")
-        time_lasting1 = time.time() - start;
-        print("time of apg optimization is", time_lasting1)
-
-        start = time.time()
-        L2, S2 = decode(M, method = "ealm")
-        time_lasting2 = time.time() - start;
-        print("time of ealm optimization is", time_lasting2)
-
-        start = time.time()
-        L3, S3 = decode(M, method = "ialm")
-        time_lasting3 = time.time() - start;
-        print("time of ialm optimization is", time_lasting3)
-
-    elif alg == 'default' :
-        start = time.time()
-        L, S = decode(M)
-        time_lasting = time.time() - start;
-        print("time of cvx optimization is", time_lasting)
+    start = time.time()
+    # L, S = decode(M, method = "apg")
+    L, S = fralm(M, 1, 0.003)
+    time_lasting = time.time() - start;
+    print("time of apg optimization is", time_lasting)
+    orig_esc  = resize(M[:,49].reshape(wd,ht).T, (dim,dim))
+    im_lr_esc = resize(L[:,49].reshape(wd,ht).T,  (dim,dim))
+    im_sp_esc = resize(S[:,49].reshape(wd,ht).T,  (dim,dim))
     
-    elif alg == 'apg' :
-        start = time.time()
-        L, S = decode(M, method = "apg")
-        time_lasting = time.time() - start;
-        print("time of apg optimization is", time_lasting)
+    fig, ax = plt.subplots(1,3)
+    fig.subplots_adjust(left=0.04, right=1, hspace=0.01, wspace=0)
 
-    elif alg == 'ealm' :
-        start = time.time()
-        L, S = decode(M, method = "ealm")
-        time_lasting = time.time() - start;
-        print("time of ealm optimization is", time_lasting)
+    ax[0].imshow(orig_esc, cmap='gray')
+    ax[0].set_title('Original Using APG')
+    ax[0].set_ylabel('Face')
+    ax[0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
 
-    elif alg == 'ialm' :
-        start = time.time()
-        L, S = decode(M, method = "ialm")
-        time_lasting = time.time() - start;
-        print("time of ialm optimization is", time_lasting)
+    ax[1].imshow(im_lr_esc, cmap='gray')
+    ax[1].set_title('Low rank Using APG')
+    ax[1].get_xaxis().set_visible(False)
+    ax[1].get_yaxis().set_visible(False)
 
-    elif alg == 'iFrALM' :
-        start = time.time()
-        L, S = decode(M, method = "iFrALM")
-        time_lasting = time.time() - start;
-        print("time of iFrALM optimization is", time_lasting)
-
-    if alg == 'all' :
-        dim = max(wd,ht)
-        # orig_esc = resize(M[:,49].reshape(wd,ht).T, (dim,dim))
-        # im_lr_esc = resize(L[:,49].reshape(wd,ht).T, (dim,dim))
-        # im_sp_esc = resize(S[:,49].reshape(wd,ht).T, (dim,dim))
-        orig_demo = reshape(M[:,49].reshape(wd,ht).T, (dim, dim))
-        im_lr_demo1 = reshape(L1[:,49].reshape(wd,ht).T, (dim, dim))
-        im_sp_demo1 = reshape(S1[:,49].reshape(wd,ht).T, (dim, dim))
-        im_lr_demo2 = reshape(L2[:,49].reshape(wd,ht).T, (dim, dim))
-        im_sp_demo2 = reshape(S2[:,49].reshape(wd,ht).T, (dim, dim))
-        im_lr_demo3 = reshape(L3[:,49].reshape(wd,ht).T, (dim, dim))
-        im_sp_demo3 = reshape(S3[:,49].reshape(wd,ht).T, (dim, dim))
-
-        # orig_demo = M
-        # im_lr_demo1 = L1
-        # im_sp_demo1 = S1
-        # im_lr_demo2 = L2
-        # im_sp_demo2 = S2
-        # im_lr_demo3 = L3
-        # im_sp_demo3 = S3
-
-        fig, ax = plt.subplots(3,3)
-
-        ax[0, 0].imshow(orig_demo, cmap='gray')
-        ax[0, 0].set_title('Original Using APG')
-        ax[0, 0].set_ylabel('Face')
-        ax[0, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
-
-        ax[0, 1].imshow(im_lr_demo1, cmap='gray')
-        ax[0, 1].set_title('Low rank Using APG')
-        ax[0, 1].get_xaxis().set_visible(False)
-        ax[0, 1].get_yaxis().set_visible(False)
-
-        ax[0, 2].imshow(im_sp_demo1, cmap='gray')
-        ax[0, 2].set_title('Sparse Using APG')
-        ax[0, 2].get_xaxis().set_visible(False)
-        ax[0, 2].get_yaxis().set_visible(False) 
-
-        ax[1, 0].imshow(orig_demo, cmap='gray')
-        ax[1, 0].set_title('Original Using EALM')
-        ax[1, 0].set_ylabel('Face')
-        ax[1, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
-
-        ax[1, 1].imshow(im_lr_demo2, cmap='gray')
-        ax[1, 1].set_title('Low rank Using EALM')
-        ax[1, 1].get_xaxis().set_visible(False)
-        ax[1, 1].get_yaxis().set_visible(False)
-
-        ax[1, 2].imshow(im_sp_demo2, cmap='gray')
-        ax[1, 2].set_title('Sparse Using EALM')
-        ax[1, 2].get_xaxis().set_visible(False)
-        ax[1, 2].get_yaxis().set_visible(False)
-
-        ax[2, 0].imshow(orig_demo, cmap='gray')
-        ax[2, 0].set_title('Original Using IALM')
-        ax[2, 0].set_ylabel('face')
-        ax[2, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
-
-        ax[2, 1].imshow(im_lr_demo3, cmap='gray')
-        ax[2, 1].set_title('Low rank Using IALM')
-        ax[2, 1].get_xaxis().set_visible(False)
-        ax[2, 1].get_yaxis().set_visible(False)
-
-        ax[2, 2].imshow(im_sp_demo3, cmap='gray')
-        ax[2, 2].set_title('Sparse Using IALM')
-        ax[2, 2].get_xaxis().set_visible(False)
-        ax[2, 2].get_yaxis().set_visible(False)
-
-
-        plt.show()
-
-
-
-
-    # orig_demo = M[:,49].reshape(wd,ht).T
-    # im_lr_demo = L[:,49].reshape(wd,ht).T
-    # im_sp_demo = S[:,49].reshape(wd,ht).T
-
-
-    # fig, ax = plt.subplots(1,3)
-    # fig.subplots_adjust(left=0.04, right=1, hspace=0.01, wspace=0)
-
-    # ax[0].imshow(orig_demo, cmap='gray')
-    # ax[0].set_title('Original')
-    # ax[0].set_ylabel('Highway')
-    # ax[0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
-
-    # ax[1].imshow(im_lr_demo, cmap='gray')
-    # ax[1].set_title('Low rank')
-    # ax[1].get_xaxis().set_visible(False)
-    # ax[1].get_yaxis().set_visible(False)
-
-    # ax[2].imshow(im_sp_demo, cmap='gray')
-    # ax[2].set_title('Sparse')
-    # ax[2].get_xaxis().set_visible(False)
-    # ax[2].get_yaxis().set_visible(False)
-
-    # plt.show()
+    ax[2].imshow(im_sp_esc, cmap='gray')
+    ax[2].set_title('Sparse Using APG')
+    ax[2].get_xaxis().set_visible(False)
+    ax[2].get_yaxis().set_visible(False) 
+    plt.show()
 
     # fig, axes = pl.subplots(1, 3, figsize=(10, 4))
     # fig.subplots_adjust(left=0, right=1, hspace=0, wspace=0.01)

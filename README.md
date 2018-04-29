@@ -11,6 +11,7 @@ implements:
 
 The following incremental robust PCA methods are also implemented:
 * Online RPCA [Feng,Xu]
+* Incremental Fast PCP [Rodriguez,Wohlberg]
 * iFrALM
 
 Current dependencies:

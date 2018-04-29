@@ -72,8 +72,8 @@ def solve_altmin(z,L,lm1,lm2):
         r = np.matmul(prod, z-e)
         diff_r = np.linalg.norm(r - rprev)
 
-        # Minimize over e now -- not differentiable, so we try to obtain
-        # a solution using proximal gradient descent with line search
+        # Minimize over e now -- the minimizer is simply the soft
+        # thresholding function
         eprev = e
         e = softThresh(z-np.matmul(L,r), lm2)
         diff_e = np.linalg.norm(e - eprev)

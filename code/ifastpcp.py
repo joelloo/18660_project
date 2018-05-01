@@ -31,10 +31,15 @@ def softThresh(x, lm):
 
 
 def test():
-    data = sio.loadmat('../data/demo_vid.mat')
-    M = data['M']
-    ht = np.asscalar(data['vh'])
-    wd = np.asscalar(data['vw'])
+    #data = sio.loadmat('../data/demo_vid.mat')
+    #M = data['M']
+    #ht = np.asscalar(data['vh'])
+    #wd = np.asscalar(data['vw'])
+    data = sio.loadmat('../data/escalator_data.mat')
+    M = data['X']
+    ht = np.asscalar(data['m'])
+    wd = np.asscalar(data['n'])
+
     dim = max(wd, ht)
     lm = 1 / np.sqrt(max(M.shape))
     m,n = M.shape
@@ -48,7 +53,13 @@ def test():
 
     for i in range(k0, n):
         d = M[:,i]
+        print "d----"
+        print d
         Lk, Sk, uk, sk, vk = incPCP_update(d, uk, sk, vk, lm, r, i)
+        print "Lk----"
+        print Lk
+        print "Sk----"
+        print Sk
         vk = vk.T
 
         if i%5 == 0:
@@ -78,6 +89,6 @@ def test():
 
 
 
-test()
+#test()
 
 

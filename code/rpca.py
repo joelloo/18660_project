@@ -23,14 +23,14 @@ class RPCA():
         prob = cvx.Problem(cvx.Minimize(obj), cons)
         prob.solve()
 
-        print "PCP status: "  + str(prob.status)
+        print("PCP status: "  + str(prob.status))
         self.L_ = L.value
         self.S_ = S.value
 
 
     # Accelerated proximal gradient descent
 
-    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-5, tol=1e-5, maxIters=1000):
+    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-5, tol=1e-6, maxIters=20000):
         D = self.M_
         m,n = D.shape
         mu_k = mu0 if mu0 else 0.99 * np.linalg.norm(D, 2)
@@ -64,7 +64,7 @@ class RPCA():
             diff = Anext + Enext - Y_Ak - Y_Ek
             S_Anext = 2 * (Y_Ak - Anext) + diff 
             S_Enext = 2 * (Y_Ek - Enext) + diff
-            Snext = np.sqrt(np.linalg.norm(S_Anext, 'fro')**2 
+            Snext = (np.linalg.norm(S_Anext, 'fro')**2 
                             + np.linalg.norm(S_Enext, 'fro')**2)
             converged = Snext < tol
             Ak = Anext
@@ -82,7 +82,7 @@ class RPCA():
 
     # Exact ALM, using algorithm, constants described in [Lin,Chen,Ma]
 
-    def rpca_ealm(self, lm=None, mu=None, rho=6, delta=1e-7, deltaProj=1e-6, maxIters=100):
+    def rpca_ealm(self, lm=None, mu=None, rho=6, delta=1e-5, deltaProj=1e-5, maxIters=100):
         D = self.M_
         m,n = D.shape
         lm = lm if lm else 1. / np.sqrt(m)
@@ -103,6 +103,7 @@ class RPCA():
         while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
             # print iters
             converged = False
+            inner_iters = 0
 
             while not converged:
                 mu_k_inv = 1. / mu
@@ -113,13 +114,14 @@ class RPCA():
                             and np.linalg.norm(Enext-E, 'fro') < stopInner)
                 A = Anext
                 E = Enext
+                inner_iters += 1
 
             Y = Y + mu * (D-A-E)
             mu = rho * mu
 
-            err = np.sqrt(np.linalg.norm(Enext-E, 'fro') ** 2 + np.linalg.norm(Anext-A, 'fro') ** 2)
+            err = np.linalg.norm(Enext-E, 'fro') ** 2 + np.linalg.norm(Anext-A, 'fro') ** 2
 
-            print("Iterations: " + repr(iters) + "error: " + repr(err))
+            print("Iterations: " + str(iters) + " | " + str(inner_iters) + " | " + "error: " + repr(err))
             iters += 1
 
 
@@ -129,7 +131,7 @@ class RPCA():
 
     # Inexact ALM, using formulation and constants from [Candes,Li,Ma,Wright,2009]
 
-    def rpca_ialm(self, delta=1e-7, mu=None, lm=None):
+    def rpca_ialm(self, delta=1e-5, mu=None, lm=None):
         # Init constants and vars
         M = self.M_
         m,n = M.shape
@@ -158,7 +160,7 @@ class RPCA():
             diff = np.linalg.norm(M-L-S, 'fro')
 
             if iters % 100 == 0:
-                print "Passed " + str(iters) + " iterations: " + str(diff)
+                print("Passed " + str(iters) + " iterations: " + str(diff))
 
         self.L_ = L
         self.S_ = S

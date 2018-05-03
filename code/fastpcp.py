@@ -12,20 +12,21 @@ def fastpcp(D, lm, tau=1e-2, n_iters=50):
     r = 1
 
     for k in range(n_iters):
-        print "Iteration " + str(k) + " | Rank: " + str(r)
+        #print "Iteration " + str(k) + " | Rank: " + str(r)
         u, s, vt = randomized_svd(D-S, n_components=r)
         L = np.matmul(u, np.matmul(np.diag(s), vt))
         if s[r-1] / np.sum(s) > tau:
             r += 1
         S = softThresh(D-L, lm)
 
+    print("Final error: " + str(np.linalg.norm(D-L-S, 'fro')) + " | " + str(r))
     return L, S
 
 
 def softThresh(x, lm):
     return np.sign(x) * np.maximum(np.abs(x) - lm, 0)
 
-
+"""
 # Test on highway data
 data = sio.loadmat('../data/demo_vid.mat')
 M = data['M']
@@ -103,4 +104,4 @@ ax[1,2].get_xaxis().set_visible(False)
 ax[1,2].get_yaxis().set_visible(False)
 
 plt.show()
-
+"""

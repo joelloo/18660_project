@@ -10,6 +10,7 @@ from skimage import color
 from skimage.transform import resize
 from sklearn.utils.extmath import randomized_svd
 from rpca import *
+from fastpcp import *
 
 
 data = sio.loadmat('../data/demo_vid.mat')
@@ -51,9 +52,14 @@ e_ialm = time.process_time()
 L_ialm = rpca.L_
 S_ialm = rpca.S_
 
+s_fpcp = time.process_time()
+L_fpcp, S_fpcp = fastpcp(M, 1/np.sqrt(max(M.shape)))
+e_fpcp = time.process_time()
+
 print("Total time: " + str(e_apg - s_apg))
 print("Total time: " + str(e_ealm - s_ealm))
 print("Total time: " + str(e_ialm - s_ialm))
+print("Total time: " + str(e_fpcp - s_fpcp))
 
 
 orig_esc  = resize(M[:,49].reshape(wd,ht).T, (dim,dim))
@@ -63,8 +69,10 @@ im_lr_ealm = resize(L_ealm[:,49].reshape(wd,ht).T,  (dim,dim))
 im_sp_ealm = resize(S_ealm[:,49].reshape(wd,ht).T,  (dim,dim))
 im_lr_ialm = resize(L_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
 im_sp_ialm = resize(S_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_lr_fpcp = resize(L_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_sp_fpcp = resize(S_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
 
-fig, ax = plt.subplots(3,3)
+fig, ax = plt.subplots(4,3)
 fig.subplots_adjust(left=0.04, right=1, hspace=0.001, wspace=0)
 
 ax[0,0].imshow(orig_esc, cmap='gray')
@@ -105,5 +113,17 @@ ax[2,1].get_yaxis().set_visible(False)
 ax[2,2].imshow(im_sp_ialm, cmap='gray')
 ax[2,2].get_xaxis().set_visible(False)
 ax[2,2].get_yaxis().set_visible(False)
+
+ax[3,0].imshow(orig_esc, cmap='gray')
+ax[3,0].set_ylabel('FPCP')
+ax[3,0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
+
+ax[3,1].imshow(im_lr_fpcp, cmap='gray')
+ax[3,1].get_xaxis().set_visible(False)
+ax[3,1].get_yaxis().set_visible(False)
+
+ax[3,2].imshow(im_sp_fpcp, cmap='gray')
+ax[3,2].get_xaxis().set_visible(False)
+ax[3,2].get_yaxis().set_visible(False)
 
 plt.show()

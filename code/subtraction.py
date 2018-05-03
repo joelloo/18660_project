@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import division, print_function
 import numpy as np
 import time
 import matplotlib.pyplot as plt
@@ -32,22 +31,6 @@ def decode(M, method = "default"):
         L, S = rpca.L_, rpca.S_;
         return L,S
 
-def bitmap_to_mat(bitmap_seq):
-    """from blog.shriphani.com"""
-    matrix = []
-    shape = None
-    print("Number of frames:", len(bitmap_seq))
-    for bitmap_file in bitmap_seq:
-        # img = Image.open(bitmap_file).convert("L") %% rgb convert to gray
-        img = Image.open(bitmap_file)
-        if shape is None:
-            shape = img.size
-        assert img.size == shape
-        img = np.array(img.getdata())
-        matrix.append(img)
-    return np.array(matrix), shape[::-1]
-
-
 def do_plot(ax, img, shape):
     ax.cla()
     ax.imshow(img.reshape(shape), cmap="gray", interpolation="nearest")
@@ -72,7 +55,7 @@ if __name__ == "__main__":
 
     start = time.time()
     # L, S = decode(M, method = "apg")
-    L, S = fralm(M, 1, 0.003)
+    L, S = fralm(M)
     time_lasting = time.time() - start;
     print("time of apg optimization is", time_lasting)
     orig_esc  = resize(M[:,49].reshape(wd,ht).T, (dim,dim))

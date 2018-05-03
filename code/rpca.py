@@ -29,8 +29,7 @@ class RPCA():
 
 
     # Accelerated proximal gradient descent
-
-    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-5, tol=1e-6, maxIters=20000):
+    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, conv=1e-7, maxIters=20000):
         D = self.M_
         m,n = D.shape
         mu_k = mu0 if mu0 else 0.99 * np.linalg.norm(D, 2)
@@ -45,6 +44,7 @@ class RPCA():
         tk_1 = 1
         converged = False
         iters = 0
+        Sprev = np.inf
 
         while iters < maxIters and not converged:
             Y_Ak = Ak + (tk_1-1)/tk * (Ak - Ak_1)
@@ -66,23 +66,27 @@ class RPCA():
             S_Enext = 2 * (Y_Ek - Enext) + diff
             Snext = (np.linalg.norm(S_Anext, 'fro')**2 
                             + np.linalg.norm(S_Enext, 'fro')**2)
-            converged = Snext < tol
+            conv_err = abs(Snext-Sprev)
+            converged = Snext < tol or conv_err < conv
+            Sprev = Snext
+
             Ak = Anext
             Ak_1 = Ak
             Ek = Enext
             Ek_1 = Ek
 
-            print("Iterations: " + repr(iters) + "; error: " + repr(Snext))
-
+            if iters % 100 == 0:
+                print("APG: Passed " + str(iters) + " iterations, error: " + str(np.linalg.norm(D - Ak - Ek, 'fro')))
             iters += 1
 
+        print("Final error: " + str(np.linalg.norm(D-Ak-Ek,'fro')) + " | " + str(np.linalg.matrix_rank(Ak)))
         self.L_ = Ak
         self.S_ = Ek
 
 
     # Exact ALM, using algorithm, constants described in [Lin,Chen,Ma]
 
-    def rpca_ealm(self, lm=None, mu=None, rho=6, delta=1e-5, deltaProj=1e-5, maxIters=100):
+    def rpca_ealm(self, lm=None, mu=None, rho=6, delta=1e-5, deltaProj=1e-5, conv=1e-7, maxIters=100):
         D = self.M_
         m,n = D.shape
         lm = lm if lm else 1. / np.sqrt(m)
@@ -99,8 +103,11 @@ class RPCA():
         iters = 0
         stop = delta * dnorm
         stopInner = deltaProj * dnorm
+        print(stop)
 
-        while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
+        # while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
+        prev = np.inf
+        while True:
             # print iters
             converged = False
             inner_iters = 0
@@ -118,20 +125,25 @@ class RPCA():
 
             Y = Y + mu * (D-A-E)
             mu = rho * mu
-
-            err = np.linalg.norm(Enext-E, 'fro') ** 2 + np.linalg.norm(Anext-A, 'fro') ** 2
-
-            print("Iterations: " + str(iters) + " | " + str(inner_iters) + " | " + "error: " + repr(err))
+            error = np.linalg.norm(D-A-E, 'fro')
+            curr = error
+            conv_err = abs(curr - prev)
+            prev = curr
+            
+            if iters % 1 == 0:
+                print("EALM: Passed " + str(iters) + " iterations, error: " + str(error))
             iters += 1
+            if iters > maxIters or error < stop or conv_err < conv:
+                break
 
-
+        print("Final error: " + str(np.linalg.norm(D-A-E, 'fro')) + " | " + str(np.linalg.matrix_rank(A)))
         self.L_ = A
         self.S_ = E
 
 
     # Inexact ALM, using formulation and constants from [Candes,Li,Ma,Wright,2009]
 
-    def rpca_ialm(self, delta=1e-5, mu=None, lm=None):
+    def rpca_ialm(self, delta=1e-5, conv=1e-7, mu=None, lm=None):
         # Init constants and vars
         M = self.M_
         m,n = M.shape
@@ -146,7 +158,9 @@ class RPCA():
 
         iters = 0
         diff = np.inf
-        while diff > stop:
+        prev = np.inf
+        conv_err = np.inf
+        while diff > stop and conv_err > conv:
             # Update L
             L = svt(M - S + mu_inv*Y, mu_inv)
 
@@ -158,10 +172,15 @@ class RPCA():
 
             iters += 1
             diff = np.linalg.norm(M-L-S, 'fro')
+            nxt = np.linalg.norm(M-L-S, 'fro')
+            conv_err = abs(nxt - prev)
+            prev = nxt
 
             if iters % 100 == 0:
                 print("Passed " + str(iters) + " iterations: " + str(diff))
+                print("IALM: Passed " + str(iters) + " iterations, error: " + str(diff))
 
+        print("Final error: " + str(np.linalg.norm(M-L-S, 'fro')) + " | " + str(np.linalg.matrix_rank(L)))
         self.L_ = L
         self.S_ = S
 
@@ -179,15 +198,6 @@ def shrinkage(X, tau):
 def svt(X, tau):
     m,n = X.shape
     minsq = min(m,n)
-
-    
-    # U, S, V = np.linalg.svd(X)
-    # thresh = np.maximum(S - tau, 0)
-    # smat = np.zeros((m,n))
-    # smat[:minsq, :minsq] = np.diag(thresh)
-
-    # return np.dot(U, np.dot(smat, V))
-
     U, S, V = np.linalg.svd(X, full_matrices = False)
     thresh = np.maximum(S - tau, 0)
     return np.dot(U * thresh, V)

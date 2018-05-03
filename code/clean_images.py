@@ -4,11 +4,8 @@ from skimage import color
 from rpca import *
 import matplotlib.pyplot as plt
 
-# face_s1 = io.imread("../data/yalefaces/subject01.leftlight")
-# img = io.imread("../data/test/shot.jpg")
 img = io.imread("../data/yalefaces/subject01.leftlight")
 img = color.rgb2gray(img);
-print img.shape
 rpca = RPCA(img)
 # rpca.rpca_ialm()
 rpca.rpca_ealm()

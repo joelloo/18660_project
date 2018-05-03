@@ -29,8 +29,9 @@ class RPCA():
 
 
     # Accelerated proximal gradient descent
-
-    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-5, tol=1e-5, maxIters=1000):
+    # @staticmethod
+    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, maxIters=1000):
+    # def rpca_apg(D, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, maxIters=1000):
         D = self.M_
         m,n = D.shape
         mu_k = mu0 if mu0 else 0.99 * np.linalg.norm(D, 2)
@@ -72,7 +73,8 @@ class RPCA():
             Ek = Enext
             Ek_1 = Ek
 
-            print("Iterations: " + repr(iters) + "; error: " + repr(Snext))
+            if iters % 100 == 0:
+                print "APG: Passed " + str(iters) + " iterations, error: " + str(np.linalg.norm(D - Ak - Ek, 'fro'))
 
             iters += 1
 
@@ -100,7 +102,8 @@ class RPCA():
         stop = delta * dnorm
         stopInner = deltaProj * dnorm
 
-        while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
+        # while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
+        while True:
             # print iters
             converged = False
 
@@ -116,11 +119,13 @@ class RPCA():
 
             Y = Y + mu * (D-A-E)
             mu = rho * mu
-
-            err = np.sqrt(np.linalg.norm(Enext-E, 'fro') ** 2 + np.linalg.norm(Anext-A, 'fro') ** 2)
-
-            print("Iterations: " + repr(iters) + "error: " + repr(err))
+            error = np.linalg.norm(D-A-E, 'fro')
+            
+            if iters % 100 == 0:
+                print "EALM: Passed " + str(iters) + " iterations, error: " + str(error)
             iters += 1
+            if iters > maxIters or error < stop:
+                break
 
 
         self.L_ = A
@@ -158,7 +163,7 @@ class RPCA():
             diff = np.linalg.norm(M-L-S, 'fro')
 
             if iters % 100 == 0:
-                print "Passed " + str(iters) + " iterations: " + str(diff)
+                print "IALM: Passed " + str(iters) + " iterations, error: " + str(diff)
 
         self.L_ = L
         self.S_ = S
@@ -177,15 +182,6 @@ def shrinkage(X, tau):
 def svt(X, tau):
     m,n = X.shape
     minsq = min(m,n)
-
-    
-    # U, S, V = np.linalg.svd(X)
-    # thresh = np.maximum(S - tau, 0)
-    # smat = np.zeros((m,n))
-    # smat[:minsq, :minsq] = np.diag(thresh)
-
-    # return np.dot(U, np.dot(smat, V))
-
     U, S, V = np.linalg.svd(X, full_matrices = False)
     thresh = np.maximum(S - tau, 0)
     return np.dot(U * thresh, V)

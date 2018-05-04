@@ -23,15 +23,13 @@ class RPCA():
         prob = cvx.Problem(cvx.Minimize(obj), cons)
         prob.solve()
 
-        print "PCP status: "  + str(prob.status)
+        print("PCP status: "  + str(prob.status))
         self.L_ = L.value
         self.S_ = S.value
 
 
     # Accelerated proximal gradient descent
-    # @staticmethod
-    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, maxIters=1000):
-    # def rpca_apg(D, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, maxIters=1000):
+    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, conv=1e-7, maxIters=20000):
         D = self.M_
 
         m,n = D.shape
@@ -48,7 +46,7 @@ class RPCA():
         tk_1 = 1
         converged = False
         iters = 0
-        error = np.inf
+        Sprev = np.inf
 
         while iters < maxIters and not converged:
             Y_Ak = Ak + (tk_1-1)/tk * (Ak - Ak_1)
@@ -68,28 +66,29 @@ class RPCA():
             diff = Anext + Enext - Y_Ak - Y_Ek
             S_Anext = 2 * (Y_Ak - Anext) + diff 
             S_Enext = 2 * (Y_Ek - Enext) + diff
-            Snext = np.sqrt(np.linalg.norm(S_Anext, 'fro')**2 
+            Snext = (np.linalg.norm(S_Anext, 'fro')**2 
                             + np.linalg.norm(S_Enext, 'fro')**2)
-            # converged = Snext < tol
-            error = np.linalg.norm(D - Anext - Enext, 'fro') / norm_fro
-            converged = error < delt
+            conv_err = abs(Snext-Sprev)
+            converged = Snext < tol or conv_err < conv
+            Sprev = Snext
+
             Ak = Anext
             Ak_1 = Ak
             Ek = Enext
             Ek_1 = Ek
 
             if iters % 100 == 0:
-                print "APG: Passed " + str(iters) + " iterations, error: " + str(error)
-
+                print("APG: Passed " + str(iters) + " iterations, error: " + str(np.linalg.norm(D - Ak - Ek, 'fro')))
             iters += 1
 
+        print("Final error: " + str(np.linalg.norm(D-Ak-Ek,'fro')) + " | " + str(np.linalg.matrix_rank(Ak)))
         self.L_ = Ak
         self.S_ = Ek
 
 
     # Exact ALM, using algorithm, constants described in [Lin,Chen,Ma]
 
-    def rpca_ealm(self, lm=None, mu=None, rho=6, delta=1e-7, deltaProj=1e-6, maxIters=100):
+    def rpca_ealm(self, lm=None, mu=None, rho=6, delta=1e-5, deltaProj=1e-5, conv=1e-7, maxIters=100):
         D = self.M_
         m,n = D.shape
         lm = lm if lm else 1. / np.sqrt(m)
@@ -106,9 +105,15 @@ class RPCA():
         iters = 0
         error = np.inf
         stopInner = deltaProj * dnorm
+        print(stop)
 
-        while iters < maxIters and error > delta:
+        # while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
+        prev = np.inf
+        while True:
+            # print iters
             converged = False
+            inner_iters = 0
+
             while not converged:
                 mu_k_inv = 1. / mu
                 Anext = svt(D - E + mu_k_inv * Y, mu_k_inv)
@@ -118,22 +123,31 @@ class RPCA():
                             and np.linalg.norm(Enext-E, 'fro') < stopInner)
                 A = Anext
                 E = Enext
+                inner_iters += 1
 
             Y = Y + mu * (D-A-E)
             mu = rho * mu
-            error = np.linalg.norm(D-A-E, 'fro') / dnorm
+
+            error = np.linalg.norm(D-A-E, 'fro')
+            curr = error
+            conv_err = abs(curr - prev)
+            prev = curr
             
-            if iters % 100 == 0:
-                print "EALM: Passed " + str(iters) + " iterations, error: " + str(error)
+            if iters % 1 == 0:
+                print("EALM: Passed " + str(iters) + " iterations, error: " + str(error))
             iters += 1
 
+            if iters > maxIters or error < stop or conv_err < conv:
+                break
+
+        print("Final error: " + str(np.linalg.norm(D-A-E, 'fro')) + " | " + str(np.linalg.matrix_rank(A)))
         self.L_ = A
         self.S_ = E
 
 
     # Inexact ALM, using formulation and constants from [Candes,Li,Ma,Wright,2009]
 
-    def rpca_ialm(self, delta=1e-7, mu=None, lm=None):
+    def rpca_ialm(self, delta=1e-5, conv=1e-7, mu=None, lm=None):
         # Init constants and vars
         M = self.M_
         m,n = M.shape
@@ -151,8 +165,11 @@ class RPCA():
         # Y = M / max(norm_2, norm_inf)
 
         iters = 0
-        error = np.inf
-        while error > delta:
+
+        diff = np.inf
+        prev = np.inf
+        conv_err = np.inf
+        while diff > stop and conv_err > conv:
             # Update L
             L = svt(M - S + mu_inv*Y, mu_inv)
 
@@ -162,13 +179,17 @@ class RPCA():
             # Update Y
             Y = Y + mu * (M - L - S)
 
-            error = np.linalg.norm(M-L-S, 'fro') / norm_fro
+            iters += 1
+            diff = np.linalg.norm(M-L-S, 'fro')
+            nxt = np.linalg.norm(M-L-S, 'fro')
+            conv_err = abs(nxt - prev)
+            prev = nxt
 
             if iters % 100 == 0:
-                print "IALM: Passed " + str(iters) + " iterations, error: " + str(error)
-            
-            iters += 1
+                print("Passed " + str(iters) + " iterations: " + str(diff))
+                print("IALM: Passed " + str(iters) + " iterations, error: " + str(diff))
 
+        print("Final error: " + str(np.linalg.norm(M-L-S, 'fro')) + " | " + str(np.linalg.matrix_rank(L)))
         self.L_ = L
         self.S_ = S
 

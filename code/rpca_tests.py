@@ -1,53 +1,76 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from __future__ import division, print_function
 import numpy as np
-from skimage import io
+import time
+import matplotlib.pyplot as plt
+import scipy.io as sio
 from skimage import color
+from skimage.transform import resize
+from sklearn.utils.extmath import randomized_svd
 from rpca import *
 from fastpcp import *
-import matplotlib.pyplot as plt
-import time
 
-img = io.imread("../data/yalefaces/subject01.leftlight")
-img = color.rgb2gray(img);
-rpca = RPCA(img)
-s_ialm = time.process_time()
-rpca.rpca_ialm()
-e_ialm = time.process_time()
-L_ialm = rpca.L_
-S_ialm = rpca.S_
 
-s_ealm = time.process_time()
-rpca.rpca_ealm()
-e_ealm = time.process_time()
-L_ealm = rpca.L_
-S_ealm = rpca.S_
+data = sio.loadmat('../data/demo_vid.mat')
+M = data['M']
+ht = np.asscalar(data['vh'])
+wd = np.asscalar(data['vw'])
 
+"""
+data = sio.loadmat('../data/escalator_data.mat')
+M = data['X'][:,:51]
+ht = np.asscalar(data['m'])
+wd = np.asscalar(data['n'])
+"""
+
+m,n = M.shape
+dim = max(wd, ht)
+
+
+rpca = RPCA(M)
+
+# APG
 s_apg = time.process_time()
 rpca.rpca_apg()
 e_apg = time.process_time()
 L_apg = rpca.L_
 S_apg = rpca.S_
 
-lm = 1 / np.sqrt(max(img.shape))
-s_fpcp = time.process_time()
-L_fpcp, S_fpcp = fastpcp(img, lm)
-e_fpcp = time.process_time()
+# EALM
+s_ealm = time.process_time()
+rpca.rpca_ealm()
+e_ealm = time.process_time()
+L_ealm = rpca.L_
+S_ealm = rpca.S_
 
+# IALM
+s_ialm = time.process_time()
+rpca.rpca_ialm()
+e_ialm = time.process_time()
+L_ialm = rpca.L_
+S_ialm = rpca.S_
+
+s_fpcp = time.process_time()
+L_fpcp, S_fpcp = fastpcp(M, 1/np.sqrt(max(M.shape)))
+e_fpcp = time.process_time()
 
 print("Total time: " + str(e_apg - s_apg))
 print("Total time: " + str(e_ealm - s_ealm))
 print("Total time: " + str(e_ialm - s_ialm))
 print("Total time: " + str(e_fpcp - s_fpcp))
-print("Size of image: " + str(img.shape))
 
-orig_esc  = img 
-im_lr_apg = L_apg
-im_sp_apg = S_apg
-im_lr_ealm = L_ealm
-im_sp_ealm = S_ealm
-im_lr_ialm = L_ialm
-im_sp_ialm = S_ialm
-im_lr_fpcp = L_fpcp
-im_sp_fpcp = S_fpcp
+
+orig_esc  = resize(M[:,49].reshape(wd,ht).T, (dim,dim))
+im_lr_apg = resize(L_apg[:,49].reshape(wd,ht).T,  (dim,dim))
+im_sp_apg = resize(S_apg[:,49].reshape(wd,ht).T,  (dim,dim))
+im_lr_ealm = resize(L_ealm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_sp_ealm = resize(S_ealm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_lr_ialm = resize(L_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_sp_ialm = resize(S_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_lr_fpcp = resize(L_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
+im_sp_fpcp = resize(S_ialm[:,49].reshape(wd,ht).T,  (dim,dim))
 
 fig, ax = plt.subplots(4,3)
 fig.subplots_adjust(left=0.04, right=1, hspace=0.001, wspace=0)

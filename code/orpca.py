@@ -4,13 +4,14 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 
 
-def orpca(M, lm1, lm2, L0, solve_type):
+def orpca(M, lm1, lm2, L0, solve_type, output_err=False):
     m,n = M.shape
     A = np.zeros((n,n))
     B = np.zeros((m,n))
     R = np.zeros((n,n))
     E = np.zeros((m,n))
     L = L0
+    err = []
 
     for i in range(n):
         print "Iteration " + str(i)
@@ -30,7 +31,11 @@ def orpca(M, lm1, lm2, L0, solve_type):
         R[:,i] = r.flatten()
         E[:,i] = e.flatten()
 
-    return np.matmul(L,R.T), E
+    if output_err:
+        lr = np.matmul(L,R)
+        return lr, E, np.linalg.norm(M-lr-E, axis=0)
+
+    return np.matmul(L,R), E
 
 # Update the basis L
 def basis_update(L,A,B,lm1,lm2):
@@ -86,6 +91,7 @@ def solve_altmin(z,L,lm1,lm2):
 def softThresh(x, lm):
     return np.sign(x) * np.maximum(np.abs(x) - lm, 0)
 
+"""
 # Test
 data = sio.loadmat('../data/demo_vid.mat')
 M = data['M']
@@ -100,7 +106,7 @@ L, S = orpca(M, lm1, lm2, np.random.rand(m,n), "altmin")
 for i in range(0,n,5):
     im_lr = L[:,i].reshape(wd,ht).T
     im_sp = S[:,i].reshape(wd,ht).T
-    #plt.imshow(im_lr, cmap='gray')
-    plt.imshow(im_sp, cmap='gray')
+    plt.imshow(im_lr, cmap='gray')
+    #plt.imshow(im_sp, cmap='gray')
     plt.show()
-
+"""

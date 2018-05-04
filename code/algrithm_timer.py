@@ -48,23 +48,23 @@ demo_rpca_res4 = RPCA(demo_M_4)
 demo_rpca_res5 = RPCA(demo_M_5)
 
 
-demo_time_cost[4, 0] = timeit(demo_rpca_res1.rpca_apg, number = test_number) / test_number
-demo_time_cost[3, 0] = timeit(demo_rpca_res2.rpca_apg, number = test_number) / test_number
-demo_time_cost[2, 0] = timeit(demo_rpca_res3.rpca_apg, number = test_number) / test_number
-demo_time_cost[1, 0] = timeit(demo_rpca_res4.rpca_apg, number = test_number) / test_number
-demo_time_cost[0, 0] = timeit(demo_rpca_res5.rpca_apg, number = test_number) / test_number
+# demo_time_cost[4, 0] = timeit(demo_rpca_res1.rpca_apg, number = test_number) / test_number
+# demo_time_cost[3, 0] = timeit(demo_rpca_res2.rpca_apg, number = test_number) / test_number
+# demo_time_cost[2, 0] = timeit(demo_rpca_res3.rpca_apg, number = test_number) / test_number
+# demo_time_cost[1, 0] = timeit(demo_rpca_res4.rpca_apg, number = test_number) / test_number
+# demo_time_cost[0, 0] = timeit(demo_rpca_res5.rpca_apg, number = test_number) / test_number
 
-demo_time_cost[4, 1] = timeit(demo_rpca_res1.rpca_ealm, number = test_number) / test_number
-demo_time_cost[3, 1] = timeit(demo_rpca_res2.rpca_ealm, number = test_number) / test_number
-demo_time_cost[2, 1] = timeit(demo_rpca_res3.rpca_ealm, number = test_number) / test_number
-demo_time_cost[1, 1] = timeit(demo_rpca_res4.rpca_ealm, number = test_number) / test_number
-demo_time_cost[0, 1] = timeit(demo_rpca_res5.rpca_ealm, number = test_number) / test_number
+# demo_time_cost[4, 1] = timeit(demo_rpca_res1.rpca_ealm, number = test_number) / test_number
+# demo_time_cost[3, 1] = timeit(demo_rpca_res2.rpca_ealm, number = test_number) / test_number
+# demo_time_cost[2, 1] = timeit(demo_rpca_res3.rpca_ealm, number = test_number) / test_number
+# demo_time_cost[1, 1] = timeit(demo_rpca_res4.rpca_ealm, number = test_number) / test_number
+# demo_time_cost[0, 1] = timeit(demo_rpca_res5.rpca_ealm, number = test_number) / test_number
 
-demo_time_cost[4, 2] = timeit(demo_rpca_res1.rpca_ialm, number = test_number) / test_number
-demo_time_cost[3, 2] = timeit(demo_rpca_res2.rpca_ialm, number = test_number) / test_number
-demo_time_cost[2, 2] = timeit(demo_rpca_res3.rpca_ialm, number = test_number) / test_number
-demo_time_cost[1, 2] = timeit(demo_rpca_res4.rpca_ialm, number = test_number) / test_number
-demo_time_cost[0, 2] = timeit(demo_rpca_res5.rpca_ialm, number = test_number) / test_number
+# demo_time_cost[4, 2] = timeit(demo_rpca_res1.rpca_ialm, number = test_number) / test_number
+# demo_time_cost[3, 2] = timeit(demo_rpca_res2.rpca_ialm, number = test_number) / test_number
+# demo_time_cost[2, 2] = timeit(demo_rpca_res3.rpca_ialm, number = test_number) / test_number
+# demo_time_cost[1, 2] = timeit(demo_rpca_res4.rpca_ialm, number = test_number) / test_number
+# demo_time_cost[0, 2] = timeit(demo_rpca_res5.rpca_ialm, number = test_number) / test_number
 
 esca_data = sio.loadmat('../data/escalator_data.mat')
 esca_M_1 = esca_data['X']
@@ -83,23 +83,24 @@ esca_rpca_res3 = RPCA(esca_M_3)
 esca_rpca_res4 = RPCA(esca_M_4)
 esca_rpca_res5 = RPCA(esca_M_5)
 
-esca_time_cost[4, 0] = timeit(esca_rpca_res1.rpca_apg, number = test_number) / test_number
+# esca_time_cost[4, 0] = timeit(esca_rpca_res1.rpca_apg, number = test_number) / test_number
 esca_time_cost[3, 0] = timeit(esca_rpca_res2.rpca_apg, number = test_number) / test_number
 esca_time_cost[2, 0] = timeit(esca_rpca_res3.rpca_apg, number = test_number) / test_number
 esca_time_cost[1, 0] = timeit(esca_rpca_res4.rpca_apg, number = test_number) / test_number
 esca_time_cost[0, 0] = timeit(esca_rpca_res5.rpca_apg, number = test_number) / test_number
 
 
-esca_time_cost[4, 1] = timeit(esca_rpca_res1.rpca_ealm, number = test_number) / test_number
+# esca_time_cost[4, 1] = timeit(esca_rpca_res1.rpca_ealm, number = test_number) / test_number
 esca_time_cost[3, 1] = timeit(esca_rpca_res2.rpca_ealm, number = test_number) / test_number
 esca_time_cost[2, 1] = timeit(esca_rpca_res3.rpca_ealm, number = test_number) / test_number
 esca_time_cost[1, 1] = timeit(esca_rpca_res4.rpca_ealm, number = test_number) / test_number
 esca_time_cost[0, 1] = timeit(esca_rpca_res5.rpca_ealm, number = test_number) / test_number
 
-esca_time_cost[4, 2] = timeit(esca_rpca_res1.rpca_ialm, number = test_number) / test_number
+# esca_time_cost[4, 2] = timeit(esca_rpca_res1.rpca_ialm, number = test_number) / test_number
 esca_time_cost[3, 2] = timeit(esca_rpca_res2.rpca_ialm, number = test_number) / test_number
 esca_time_cost[2, 2] = timeit(esca_rpca_res3.rpca_ialm, number = test_number) / test_number
 esca_time_cost[1, 2] = timeit(esca_rpca_res4.rpca_ialm, number = test_number) / test_number
+esca_time_cost[0, 2] = timeit(esca_rpca_res5.rpca_ialm, number = test_number) / test_number
 # esca_time_cost[0, 2] = timeit(esca_rpca_res5.rpca_ialm, number = test_number) / test_number
 
 face_res1 = io.imread("../data/yalefaces/subject01.leftlight")
@@ -116,54 +117,54 @@ face_rpca_res3 = RPCA(face_res3)
 face_rpca_res4 = RPCA(face_res4)
 face_rpca_res5 = RPCA(face_res5)
 
-face_time_cost[4, 0] = timeit(face_rpca_res1.rpca_apg, number = test_number) / test_number
-face_time_cost[3, 0] = timeit(face_rpca_res2.rpca_apg, number = test_number) / test_number
-face_time_cost[2, 0] = timeit(face_rpca_res3.rpca_apg, number = test_number) / test_number
-face_time_cost[1, 0] = timeit(face_rpca_res4.rpca_apg, number = test_number) / test_number
-face_time_cost[0, 0] = timeit(face_rpca_res5.rpca_apg, number = test_number) / test_number
+# face_time_cost[4, 0] = timeit(face_rpca_res1.rpca_apg, number = test_number) / test_number
+# face_time_cost[3, 0] = timeit(face_rpca_res2.rpca_apg, number = test_number) / test_number
+# face_time_cost[2, 0] = timeit(face_rpca_res3.rpca_apg, number = test_number) / test_number
+# face_time_cost[1, 0] = timeit(face_rpca_res4.rpca_apg, number = test_number) / test_number
+# face_time_cost[0, 0] = timeit(face_rpca_res5.rpca_apg, number = test_number) / test_number
 
 
-face_time_cost[4, 1] = timeit(face_rpca_res1.rpca_ealm, number = test_number) / test_number
-face_time_cost[3, 1] = timeit(face_rpca_res2.rpca_ealm, number = test_number) / test_number
-face_time_cost[2, 1] = timeit(face_rpca_res3.rpca_ealm, number = test_number) / test_number
-face_time_cost[1, 1] = timeit(face_rpca_res4.rpca_ealm, number = test_number) / test_number
-face_time_cost[0, 1] = timeit(face_rpca_res5.rpca_ealm, number = test_number) / test_number
+# face_time_cost[4, 1] = timeit(face_rpca_res1.rpca_ealm, number = test_number) / test_number
+# face_time_cost[3, 1] = timeit(face_rpca_res2.rpca_ealm, number = test_number) / test_number
+# face_time_cost[2, 1] = timeit(face_rpca_res3.rpca_ealm, number = test_number) / test_number
+# face_time_cost[1, 1] = timeit(face_rpca_res4.rpca_ealm, number = test_number) / test_number
+# face_time_cost[0, 1] = timeit(face_rpca_res5.rpca_ealm, number = test_number) / test_number
 
-face_time_cost[4, 2] = timeit(face_rpca_res1.rpca_ialm, number = test_number) / test_number
-face_time_cost[3, 2] = timeit(face_rpca_res2.rpca_ialm, number = test_number) / test_number
-face_time_cost[2, 2] = timeit(face_rpca_res3.rpca_ialm, number = test_number) / test_number
-face_time_cost[1, 2] = timeit(face_rpca_res4.rpca_ialm, number = test_number) / test_number
-face_time_cost[0, 2] = timeit(face_rpca_res5.rpca_ialm, number = test_number) / test_number
+# face_time_cost[4, 2] = timeit(face_rpca_res1.rpca_ialm, number = test_number) / test_number
+# face_time_cost[3, 2] = timeit(face_rpca_res2.rpca_ialm, number = test_number) / test_number
+# face_time_cost[2, 2] = timeit(face_rpca_res3.rpca_ialm, number = test_number) / test_number
+# face_time_cost[1, 2] = timeit(face_rpca_res4.rpca_ialm, number = test_number) / test_number
+# face_time_cost[0, 2] = timeit(face_rpca_res5.rpca_ialm, number = test_number) / test_number
 
 
 
 xaxis = [0.2, 0.4, 0.6, 0.8, 1]
-plt.figure(1)
-plt.plot(xaxis, demo_time_cost[:, 0], 'r', label = 'APG Method')
-plt.plot(xaxis, demo_time_cost[:, 1], 'g', label = 'EALM Method')
-plt.plot(xaxis, demo_time_cost[:, 2], 'b', label = 'IALM Method')
-plt.title('Speed Comparison at Five Resolutions for highway data')
-plt.legend()
-plt.xlabel('Scale')
-plt.ylabel('Time Cost(s)')
+# plt.figure(1)
+# plt.plot(xaxis, demo_time_cost[:, 0], 'r', label = 'APG Method')
+# plt.plot(xaxis, demo_time_cost[:, 1], 'g', label = 'EALM Method')
+# plt.plot(xaxis, demo_time_cost[:, 2], 'b', label = 'IALM Method')
+# plt.title('Speed Comparison at Five Resolutions for highway data')
+# plt.legend()
+# plt.xlabel('Scale')
+# plt.ylabel('Time Cost(s)')
 
 plt.figure(2)
-plt.plot(xaxis, esca_time_cost[:, 0], 'r', label = 'APG Method')
-plt.plot(xaxis, esca_time_cost[:, 1], 'g', label = 'EALM Method')
-plt.plot(xaxis, esca_time_cost[:, 2], 'b', label = 'IALM Method')
+plt.plot(xaxis[:4], esca_time_cost[:4, 0], 'r', label = 'APG Method')
+plt.plot(xaxis[:4], esca_time_cost[:4, 1], 'g', label = 'EALM Method')
+plt.plot(xaxis[:4], esca_time_cost[:4, 2], 'b', label = 'IALM Method')
 plt.title('Speed Comparison at Five Resolutions for escalator data')
 plt.legend()
 plt.xlabel('Scale')
 plt.ylabel('Time Cost(s)')
 
-plt.figure(3)
-plt.plot(xaxis, face_time_cost[:, 0], 'r', label = 'APG Method')
-plt.plot(xaxis, face_time_cost[:, 1], 'g', label = 'EALM Method')
-plt.plot(xaxis, face_time_cost[:, 2], 'b', label = 'IALM Method')
-plt.title('Speed Comparison at Five Resolutions for face specularity removal')
-plt.legend()
-plt.xlabel('Scale')
-plt.ylabel('Time Cost(s)')
+# plt.figure(3)
+# plt.plot(xaxis, face_time_cost[:, 0], 'r', label = 'APG Method')
+# plt.plot(xaxis, face_time_cost[:, 1], 'g', label = 'EALM Method')
+# plt.plot(xaxis, face_time_cost[:, 2], 'b', label = 'IALM Method')
+# plt.title('Speed Comparison at Five Resolutions for face specularity removal')
+# plt.legend()
+# plt.xlabel('Scale')
+# plt.ylabel('Time Cost(s)')
 
 plt.show()
 

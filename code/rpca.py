@@ -33,10 +33,12 @@ class RPCA():
     def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, maxIters=1000):
     # def rpca_apg(D, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, maxIters=1000):
         D = self.M_
+
         m,n = D.shape
         mu_k = mu0 if mu0 else 0.99 * np.linalg.norm(D, 2)
         mu_bar = delt * mu_k
         lm = lm if lm else 1. / np.sqrt(m)
+        norm_fro = np.linalg.norm(D, 'fro')
 
         Ak = np.zeros((m,n))
         Ak_1 = Ak
@@ -46,6 +48,7 @@ class RPCA():
         tk_1 = 1
         converged = False
         iters = 0
+        error = np.inf
 
         while iters < maxIters and not converged:
             Y_Ak = Ak + (tk_1-1)/tk * (Ak - Ak_1)
@@ -67,14 +70,16 @@ class RPCA():
             S_Enext = 2 * (Y_Ek - Enext) + diff
             Snext = np.sqrt(np.linalg.norm(S_Anext, 'fro')**2 
                             + np.linalg.norm(S_Enext, 'fro')**2)
-            converged = Snext < tol
+            # converged = Snext < tol
+            error = np.linalg.norm(D - Anext - Enext, 'fro') / norm_fro
+            converged = error < delt
             Ak = Anext
             Ak_1 = Ak
             Ek = Enext
             Ek_1 = Ek
 
             if iters % 100 == 0:
-                print "APG: Passed " + str(iters) + " iterations, error: " + str(np.linalg.norm(D - Ak - Ek, 'fro'))
+                print "APG: Passed " + str(iters) + " iterations, error: " + str(error)
 
             iters += 1
 
@@ -99,14 +104,11 @@ class RPCA():
         E = np.zeros((m,n))
 
         iters = 0
-        stop = delta * dnorm
+        error = np.inf
         stopInner = deltaProj * dnorm
 
-        # while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
-        while True:
-            # print iters
+        while iters < maxIters and error > delta:
             converged = False
-
             while not converged:
                 mu_k_inv = 1. / mu
                 Anext = svt(D - E + mu_k_inv * Y, mu_k_inv)
@@ -119,14 +121,11 @@ class RPCA():
 
             Y = Y + mu * (D-A-E)
             mu = rho * mu
-            error = np.linalg.norm(D-A-E, 'fro')
+            error = np.linalg.norm(D-A-E, 'fro') / dnorm
             
             if iters % 100 == 0:
                 print "EALM: Passed " + str(iters) + " iterations, error: " + str(error)
             iters += 1
-            if iters > maxIters or error < stop:
-                break
-
 
         self.L_ = A
         self.S_ = E
@@ -145,11 +144,15 @@ class RPCA():
         mu = mu if mu else m*n / (4*np.linalg.norm(self.M_, 1))
         mu_inv = 1. / mu
         lm_mu_inv = lm * mu_inv
-        stop = delta * np.linalg.norm(M, 'fro')
+
+        norm_2 = np.linalg.norm(M, 2)
+        norm_inf = np.linalg.norm(M, np.inf) / lm
+        norm_fro = np.linalg.norm(M, 'fro')
+        # Y = M / max(norm_2, norm_inf)
 
         iters = 0
-        diff = np.inf
-        while diff > stop:
+        error = np.inf
+        while error > delta:
             # Update L
             L = svt(M - S + mu_inv*Y, mu_inv)
 
@@ -159,11 +162,12 @@ class RPCA():
             # Update Y
             Y = Y + mu * (M - L - S)
 
-            iters += 1
-            diff = np.linalg.norm(M-L-S, 'fro')
+            error = np.linalg.norm(M-L-S, 'fro') / norm_fro
 
             if iters % 100 == 0:
-                print "IALM: Passed " + str(iters) + " iterations, error: " + str(diff)
+                print "IALM: Passed " + str(iters) + " iterations, error: " + str(error)
+            
+            iters += 1
 
         self.L_ = L
         self.S_ = S
@@ -184,6 +188,6 @@ def svt(X, tau):
     minsq = min(m,n)
     U, S, V = np.linalg.svd(X, full_matrices = False)
     thresh = np.maximum(S - tau, 0)
-    return np.dot(U * thresh, V)
+    return np.dot(np.dot(U, np.diag(thresh)), V)
 
 

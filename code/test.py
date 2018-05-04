@@ -32,18 +32,74 @@ esca_w_1 = np.asscalar(esca_data['n'])
 
 # esca_M_1, esca_h_1, esca_w_1 = downscale(esca_M_1, esca_h_1, esca_w_1, 0.1)
 
-M = demo_M_1
-h = demo_h_1
-w = demo_w_1
+M = esca_M_1
+h = esca_h_1
+w = esca_w_1
+
+M, h, w = downscale(M, h, w, 0.5)
 
 rpca = RPCA(M)
+
 rpca.rpca_ialm()
+L_ialm = rpca.L_ 
+S_ialm = rpca.S_
 
-L = rpca.L_ 
-S = rpca.S_
+rpca.rpca_apg()
+L_apg = rpca.L_ 
+S_apg = rpca.S_
 
-fig, axes = plt.subplots(1, 3)
-axes[0].imshow(M[:, 4].reshape(w, h).T,	cmap = 'gray')
-axes[1].imshow(L[:, 4].reshape(w, h).T, cmap = 'gray')
-axes[2].imshow(S[:, 4].reshape(w, h).T, cmap = 'gray')
+rpca.rpca_ealm()
+L_ealm = rpca.L_ 
+S_ealm = rpca.S_
+
+# fig, axes = plt.subplots(1, 3)
+# axes[0].imshow(M[:, 4].reshape(w, h).T, cmap = 'gray')
+# axes[1].imshow(L_apg[:, 4].reshape(w, h).T, cmap = 'gray')
+# axes[2].imshow(S_apg[:, 4].reshape(w, h).T, cmap = 'gray')
+
+fig, axes = plt.subplots(3, 3)
+fig.subplots_adjust(left=0.04, right=1, hspace=0.01, wspace=0)
+
+axes[0, 0].imshow(M[:, 4].reshape(w, h).T, 		cmap = 'gray')
+axes[0, 0].set_title('Original matrix')
+axes[0, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
+
+axes[0, 1].imshow(L_apg[:, 4].reshape(w, h).T, 	cmap = 'gray')
+axes[0, 1].set_title('Low rank matrix')
+axes[0, 1].get_xaxis().set_visible(False)
+axes[0, 1].get_yaxis().set_visible(False)
+
+axes[0, 2].imshow(S_apg[:, 4].reshape(w, h).T, 	cmap = 'gray')
+axes[0, 2].set_title('Sparse matrix')
+axes[0, 2].get_xaxis().set_visible(False)
+axes[0, 2].get_yaxis().set_visible(False)
+
+axes[1, 0].imshow(M[:, 4].reshape(w, h).T, 		cmap = 'gray')
+# axes[1, 0].set_title('Original matrix')
+axes[1, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
+
+axes[1, 1].imshow(L_ealm[:, 4].reshape(w, h).T, cmap = 'gray')
+# axes[1, 1].set_title('EALM: Low rank matrix')
+axes[1, 1].get_xaxis().set_visible(False)
+axes[1, 1].get_yaxis().set_visible(False)
+
+axes[1, 2].imshow(S_ealm[:, 4].reshape(w, h).T, cmap = 'gray')
+# axes[1, 2].set_title('EALM: Sparse matrix')
+axes[1, 2].get_xaxis().set_visible(False)
+axes[1, 2].get_yaxis().set_visible(False)
+
+axes[2, 0].imshow(M[:, 4].reshape(w, h).T, 		cmap = 'gray')
+# axes[2, 0].set_title('Original matrix')
+axes[2, 0].tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
+
+axes[2, 1].imshow(L_ialm[:, 4].reshape(w, h).T, cmap = 'gray')
+# axes[2, 1].set_title('IALM: Low rank matrix')
+axes[2, 1].get_xaxis().set_visible(False)
+axes[2, 1].get_yaxis().set_visible(False)
+
+axes[2, 2].imshow(S_ialm[:, 4].reshape(w, h).T, cmap = 'gray')
+# axes[2, 2].set_title('IALM: Sparse matrix using')
+axes[2, 1].get_xaxis().set_visible(False)
+axes[2, 1].get_yaxis().set_visible(False)
+
 plt.show()

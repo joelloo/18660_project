@@ -29,7 +29,7 @@ class RPCA():
 
 
     # Accelerated proximal gradient descent
-    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, conv=1e-7, maxIters=20000):
+    def rpca_apg(self, lm=None, mu0=None, eta=0.9, delt=1e-7, tol=1e-5, conv=1e-7, maxIters=1000):
         D = self.M_
 
         m,n = D.shape
@@ -98,6 +98,7 @@ class RPCA():
         Y = Y / max(norm_2, norm_inf)
         mu = mu if mu else 0.5 / norm_2
         dnorm = np.linalg.norm(D, 'fro')
+        stop  = dnorm * conv
 
         A = np.zeros((m,n))
         E = np.zeros((m,n))
@@ -105,7 +106,6 @@ class RPCA():
         iters = 0
         error = np.inf
         stopInner = deltaProj * dnorm
-        print(stop)
 
         # while iters < maxIters and np.linalg.norm(D-A-E, 'fro') > stop:
         prev = np.inf
@@ -193,6 +193,69 @@ class RPCA():
         self.L_ = L
         self.S_ = S
 
+    def rpca_ialm_v1(self, delta=1e-5, conv=1e-7, mu=None, lm=None, maxIters = 1000):
+        M = np.double(self.M_)
+        # M.dtype('double')
+        m,n = M.shape
+        A = np.zeros((m,n))
+        E = np.zeros((m,n))
+        Y = M
+        lm = lm if lm else 1. / np.sqrt(m)
+        # mu = mu if mu else m*n / (4*np.linalg.norm(self.M_, 1))
+
+        norm_two = np.linalg.norm(Y, 2)
+        norm_inf = np.linalg.norm( Y.reshape(-1, 1), np.inf) / lm
+        dual_norm = np.maximum(norm_two, norm_inf)
+        Y = Y / dual_norm
+
+        mu = 1.25 / norm_two
+        mu_bar = mu * 1e7;
+        mu_inv = 1. / mu
+        lm_mu_inv = lm * mu_inv
+        rho = 1.5
+        
+        norm_fro = np.linalg.norm(M, 'fro');
+        
+        
+
+        iters = 0
+        conv_err = np.inf
+        # print(norm_fro)
+        # print(mu)
+        # print(lm)
+        # print(norm_two)
+        # print(norm_fro)
+        while conv_err > conv and iters < maxIters:
+            iters = iters + 1
+            T = M - A + Y * mu_inv
+            E = shrinkage(T, lm_mu_inv)
+            # E = np.maximum(T - lm_mu_inv, 0)
+            # E = E + np.minimum(T + lm_mu_inv, 0)
+            
+
+            U, S, V = np.linalg.svd(M - E + Y * mu_inv, full_matrices = False)
+            svp = S > mu_inv
+
+            # print(np.sum(svp))
+
+            A = np.dot(np.dot(U[:, svp], np.diag(S[svp] - mu_inv)), V[svp, :])
+            Z = M - A - E
+            Y = Y + mu * Z
+            # print("iter: " + str(iters) + ", E: " + str(np.linalg.norm(E, 'fro'))
+            #     + ", A: " + str(np.linalg.norm(A, 'fro')) + ", mu: " + str(mu)
+            #     + ", T: " + str(np.linalg.norm(T, 'fro')) + ", Z: " + str(np.linalg.norm(Z, 'fro')) 
+            #     + ", Y: " + str(np.linalg.norm(Y, 'fro'))  )
+            mu = min(mu*rho, mu_bar)
+            mu_inv = 1. / mu
+            lm_mu_inv = lm * mu_inv
+
+            conv_err = np.linalg.norm(Z,'fro') / norm_fro
+            if iters % 10 == 0:
+                print("Passed " + str(iters) + " iterations: " + str(conv_err))
+
+        self.L_ = A
+        self.S_ = E
+
 
 # Shrinkage operator
 
@@ -209,6 +272,7 @@ def svt(X, tau):
     minsq = min(m,n)
     U, S, V = np.linalg.svd(X, full_matrices = False)
     thresh = np.maximum(S - tau, 0)
-    return np.dot(np.dot(U, np.diag(thresh)), V)
+    return np.dot(U * thresh, V)
+    # return np.dot(np.dot(U, np.diag(thresh)), V)
 
 

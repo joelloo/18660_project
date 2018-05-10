@@ -36,27 +36,28 @@ M = esca_M_1
 h = esca_h_1
 w = esca_w_1
 
-M, h, w = downscale(M, h, w, 0.5)
+# M, h, w = downscale(M, h, w, 0.5)
 
 rpca = RPCA(M)
 
-rpca.rpca_ialm()
+rpca.rpca_ialm_v1()
 L_ialm = rpca.L_ 
 S_ialm = rpca.S_
 
-rpca.rpca_apg()
-L_apg = rpca.L_ 
-S_apg = rpca.S_
+# rpca.rpca_apg()
+# L_apg = rpca.L_ 
+# S_apg = rpca.S_
 
-rpca.rpca_ealm()
-L_ealm = rpca.L_ 
-S_ealm = rpca.S_
+# rpca.rpca_ealm()
+# L_ealm = rpca.L_ 
+# S_ealm = rpca.S_
 
-# fig, axes = plt.subplots(1, 3)
-# axes[0].imshow(M[:, 4].reshape(w, h).T, cmap = 'gray')
-# axes[1].imshow(L_apg[:, 4].reshape(w, h).T, cmap = 'gray')
-# axes[2].imshow(S_apg[:, 4].reshape(w, h).T, cmap = 'gray')
+fig, axes = plt.subplots(1, 3)
+axes[0].imshow(M[:, 4].reshape(w, h).T, cmap = 'gray')
+axes[1].imshow(L_ialm[:, 4].reshape(w, h).T, cmap = 'gray')
+axes[2].imshow(S_ialm[:, 4].reshape(w, h).T, cmap = 'gray')
 
+'''
 fig, axes = plt.subplots(3, 3)
 fig.subplots_adjust(left=0.04, right=1, hspace=0.01, wspace=0)
 
@@ -101,5 +102,6 @@ axes[2, 2].imshow(S_ialm[:, 4].reshape(w, h).T, cmap = 'gray')
 # axes[2, 2].set_title('IALM: Sparse matrix using')
 axes[2, 1].get_xaxis().set_visible(False)
 axes[2, 1].get_yaxis().set_visible(False)
+'''
 
 plt.show()

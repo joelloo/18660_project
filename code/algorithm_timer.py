@@ -60,11 +60,11 @@ demo_time_cost[2, 1] = timeit(demo_rpca_res3.rpca_ealm, number = test_number) / 
 demo_time_cost[1, 1] = timeit(demo_rpca_res4.rpca_ealm, number = test_number) / test_number
 demo_time_cost[0, 1] = timeit(demo_rpca_res5.rpca_ealm, number = test_number) / test_number
 
-demo_time_cost[4, 2] = timeit(demo_rpca_res1.rpca_ialm, number = test_number) / test_number
-demo_time_cost[3, 2] = timeit(demo_rpca_res2.rpca_ialm, number = test_number) / test_number
-demo_time_cost[2, 2] = timeit(demo_rpca_res3.rpca_ialm, number = test_number) / test_number
-demo_time_cost[1, 2] = timeit(demo_rpca_res4.rpca_ialm, number = test_number) / test_number
-demo_time_cost[0, 2] = timeit(demo_rpca_res5.rpca_ialm, number = test_number) / test_number
+demo_time_cost[4, 2] = timeit(demo_rpca_res1.rpca_ialm_v1, number = test_number) / test_number
+demo_time_cost[3, 2] = timeit(demo_rpca_res2.rpca_ialm_v1, number = test_number) / test_number
+demo_time_cost[2, 2] = timeit(demo_rpca_res3.rpca_ialm_v1, number = test_number) / test_number
+demo_time_cost[1, 2] = timeit(demo_rpca_res4.rpca_ialm_v1, number = test_number) / test_number
+demo_time_cost[0, 2] = timeit(demo_rpca_res5.rpca_ialm_v1, number = test_number) / test_number
 
 esca_data = sio.loadmat('../data/escalator_data.mat')
 esca_M_1 = esca_data['X']
@@ -96,11 +96,11 @@ esca_time_cost[2, 1] = timeit(esca_rpca_res3.rpca_ealm, number = test_number) / 
 esca_time_cost[1, 1] = timeit(esca_rpca_res4.rpca_ealm, number = test_number) / test_number
 esca_time_cost[0, 1] = timeit(esca_rpca_res5.rpca_ealm, number = test_number) / test_number
 
-esca_time_cost[4, 2] = timeit(esca_rpca_res1.rpca_ialm, number = test_number) / test_number
-esca_time_cost[3, 2] = timeit(esca_rpca_res2.rpca_ialm, number = test_number) / test_number
-esca_time_cost[2, 2] = timeit(esca_rpca_res3.rpca_ialm, number = test_number) / test_number
-esca_time_cost[1, 2] = timeit(esca_rpca_res4.rpca_ialm, number = test_number) / test_number
-# esca_time_cost[0, 2] = timeit(esca_rpca_res5.rpca_ialm, number = test_number) / test_number
+esca_time_cost[4, 2] = timeit(esca_rpca_res1.rpca_ialm_v1, number = test_number) / test_number
+esca_time_cost[3, 2] = timeit(esca_rpca_res2.rpca_ialm_v1, number = test_number) / test_number
+esca_time_cost[2, 2] = timeit(esca_rpca_res3.rpca_ialm_v1, number = test_number) / test_number
+esca_time_cost[1, 2] = timeit(esca_rpca_res4.rpca_ialm_v1, number = test_number) / test_number
+esca_time_cost[0, 2] = timeit(esca_rpca_res5.rpca_ialm_v1, number = test_number) / test_number
 
 face_res1 = io.imread("../data/yalefaces/subject01.leftlight")
 face_res1 = color.rgb2gray(face_res1);
@@ -129,11 +129,11 @@ face_time_cost[2, 1] = timeit(face_rpca_res3.rpca_ealm, number = test_number) / 
 face_time_cost[1, 1] = timeit(face_rpca_res4.rpca_ealm, number = test_number) / test_number
 face_time_cost[0, 1] = timeit(face_rpca_res5.rpca_ealm, number = test_number) / test_number
 
-face_time_cost[4, 2] = timeit(face_rpca_res1.rpca_ialm, number = test_number) / test_number
-face_time_cost[3, 2] = timeit(face_rpca_res2.rpca_ialm, number = test_number) / test_number
-face_time_cost[2, 2] = timeit(face_rpca_res3.rpca_ialm, number = test_number) / test_number
-face_time_cost[1, 2] = timeit(face_rpca_res4.rpca_ialm, number = test_number) / test_number
-face_time_cost[0, 2] = timeit(face_rpca_res5.rpca_ialm, number = test_number) / test_number
+face_time_cost[4, 2] = timeit(face_rpca_res1.rpca_ialm_v1, number = test_number) / test_number
+face_time_cost[3, 2] = timeit(face_rpca_res2.rpca_ialm_v1, number = test_number) / test_number
+face_time_cost[2, 2] = timeit(face_rpca_res3.rpca_ialm_v1, number = test_number) / test_number
+face_time_cost[1, 2] = timeit(face_rpca_res4.rpca_ialm_v1, number = test_number) / test_number
+face_time_cost[0, 2] = timeit(face_rpca_res5.rpca_ialm_v1, number = test_number) / test_number
 
 
 

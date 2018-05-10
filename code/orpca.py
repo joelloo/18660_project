@@ -2,6 +2,7 @@ import numpy as np
 import cvxpy as cvx
 import scipy.io as sio
 import matplotlib.pyplot as plt
+import time
 
 
 def orpca(M, lm1, lm2, L0, solve_type, output_err=False):
@@ -12,17 +13,20 @@ def orpca(M, lm1, lm2, L0, solve_type, output_err=False):
     E = np.zeros((m,n))
     L = L0
     err = []
+    timing = []
 
     for i in range(n):
-        print "Iteration " + str(i)
+        st = time.process_time()
+        #print "Iteration " + str(i)
         z = M[:,i]
         z = np.atleast_2d(z).T
         if solve_type == "cvx":
             r,e = solve_cvx(z,L,lm1,lm2)
         elif solve_type == "altmin":
-            r,e = solve_altmin(z,L,lm1,lm2)
+            r,e,d = solve_altmin(z,L,lm1,lm2)
+            err.append(d)
         else:
-            print "Unknown solve type"
+            #print "Unknown solve type"
             exit(0)
         A = A + np.matmul(r, r.T)
         B = B + np.matmul(z-e, r.T)
@@ -31,9 +35,13 @@ def orpca(M, lm1, lm2, L0, solve_type, output_err=False):
         R[:,i] = r.flatten()
         E[:,i] = e.flatten()
 
+        end = time.process_time()
+        timing.append(end - st)
+        
+
     if output_err:
         lr = np.matmul(L,R)
-        return lr, E, np.linalg.norm(M-lr-E, axis=0)
+        return lr, E, np.linalg.norm(M-lr-E, axis=0), err, timing
 
     return np.matmul(L,R), E
 
@@ -69,6 +77,7 @@ def solve_altmin(z,L,lm1,lm2):
     prod = np.matmul(prod, L.T)
     diff = np.inf
     tol = 1e-5
+    diffs = []
 
     while diff > tol:
         # Minimize over r alone -- since fully differentiable wrt r, we
@@ -84,8 +93,9 @@ def solve_altmin(z,L,lm1,lm2):
         diff_e = np.linalg.norm(e - eprev)
 
         diff = max(diff_e, diff_r)
+        diffs.append(diff)
 
-    return r, e
+    return r, e, diffs
             
 
 def softThresh(x, lm):

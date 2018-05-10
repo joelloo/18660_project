@@ -1,0 +1,172 @@
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi. "pdflatex template.tex" should also work.
+%
+
+\documentclass[oneside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx,algorithmic,algorithm}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf 18660 Project Progress Report
+	\hfill 22 Apr 2018} }
+       \vspace{7mm}
+       \hbox to 6.28in { {\Large \hfill Comparison of robust PCA techniques in image and video processing  \hfill} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\hfill\it Joel Loo, Wang Xueqiang \hfill} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Project Progress Report}{Project Progress Report}
+
+   %{\bf Note}: {\it LaTeX template courtesy of UC Berkeley EECS dept.}
+   %vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+\newcommand{\compconj}[1]{%
+  \overline{#1}%
+}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{1}{0}{1}{Joel Loo, Wang Xueqiang}
+\section{Introduction}
+Principal components analysis (PCA) and other dimensionality reduction techniques have gained wide traction in the scientific community because of their utility in extracting salient data from large and complex datasets. However, PCA implicitly assumes that the noise in data is small and variance from the mean is bounded (such as in Gaussian noise), causing it to perform poorly on grossly corrupted data, or data containing outliers of significant magnitude.\newline\newline
+While there have been many attempts to robustify PCA, many of these methods are heuristics without any optimality guarantees. However, recent advances in low-rank matrix recovery and completion by Candes et al [1], have led to the formulation of robust PCA (RPCA). In RPCA, the problem is reformulated as the recovery of the matrices $L, S$ such that $M = L + S$, where $M$ is the original matrix, $L$ is a low-rank matrix and $S$ is a sparse matrix. Candes et al made the surprising observation that it is possible to perform this decomposition through a tractable convex optimization, if we assume that the low-rank matrix is not simultaneously sparse [1]. In particular, this can be achieved using the Principal Component Pursuit (PCP) estimate which solves the problem
+\begin{center}
+$
+\begin{aligned}
+& \underset{L,S}{\text{argmin}}
+& & \lVert L\rVert_{*}+ \lambda\lVert S\rVert_{1} 
+& \text{subject to}
+& & L+S=M
+\end{aligned}
+$
+\end{center}
+Since the sparse matrix can have elements of arbitrarily large magnitude, robust PCA thus improves over the PCA technique by allowing the extraction of low-dimensional structure from grossly corrupted data with unbounded outliers. This technique has many important applications in general, and in particular is of great utility in computer vision, where it is used in tackling problems such as background recovery/subtraction (which can be used in video surveillance software), removal of non-Lambertian distortions/specularities/shadows from images (akin to performing inpainting) and even recovery of 3D geometry from low-rank textures in 2D images.\newline\newline
+In order to make RPCA practicable on real-world vision systems, a number of reformulations of the problem and improvements have been proposed. Some of these improvements (e.g. Fast PCP [3]) provide significant speed improvements over the method proposed by Candes et al, while others reformulate RPCA as an online algorithm (e.g. online RPCA via stochastic optimization [2], iFrALM).
+\section{Problem Statement}
+In this project, we aim to survey several RPCA algorithms - in particular we will implement these algorithms and compare their performance, in terms of both speed and ability to separate low-rank structure from sparse noise. We are primarily interested in applying these algorithms to, and testing them on vision applications. Two applications that we are particularly interested in are the removal of specularities/non-Lambertian distortions from images, as well as background recovery/subtraction in videos. Background recovery/subtraction in video streams provides an interesting case study for RPCA as well, since it is desirable to have both algorithms that can separate backgrounds in post-processing as well as on the fly. To this end, we will use this particular application to benchmark the performance of both RPCA algorithms that offer significant speed-ups, as well as RPCA algorithms formulated to be online in nature. We will perform the implementations and benchmarking described above in Python, with code available on the private Github repository https://github.com/joelloo/18660\_project
+\section{Methods}
+In this section, we will discuss the formulation of the optimization problems for the various algorithms and  our approach to their implementation. We first approach RPCA algorithms that only enable offline computation in a video stream background subtraction setting (i.e. require all the frames of the video for the optimization), before considering online RPCA algorithms that enable on-the-fly updating of the low-rank/sparse decomposition as new frames come in from the video stream.
+\subsection{Offline RPCA Algorithms}
+The original PCP formulation of the RPCA algorithm  has several immediately apparent solutions. We can consider the relaxation $\underset{L,S}{\text{argmin}} \lVert L\rVert_{*} + \lVert S\rVert_{1} + \frac{1}{2}\lVert M-L-S\rVert^{2}_{F}$. Since $\lVert\cdot\rVert_{*}$ and $\lVert\cdot\rVert_{1}$ have well-known proximal operators in the singular value thresholding operator and the soft thresholding operator, while $\lVert\cdot\rVert_{F}$ is differentiable, it is clear that we can solve this formulation via proximal gradient descent. Indeed, Lin et al. [5] provide an accelerated proximal gradient descent (APG) based algorithm that solves this formulation by alternately minimizing $L$ (with singular value thresholding) then $E$ (with soft thresholding) at each iteration.\newline\newline
+Another possible means of approaching the PCP formulation is via the augmented Lagrangian multiplier method (ALM), as suggested by Candes et al. in [1] and elaborated on by Lin et al. in [8]. We can write the Lagrangian function of the PCP formulation as $\mathcal{L}(L,S, Y, \mu) = \lVert L\rVert_{*} + \lambda\lVert S\rVert_{1} + \langle Y, M-L-S\rangle +\frac{\mu}{2}\lVert M-L-S\rVert_{F}^{2}$.
+\begin{algorithm}
+ \caption{Augmented Lagrangian multiplier method}
+ \begin{algorithmic}  
+ \STATE Initialize $Y_{0} = sgn(D)/J(D)$; $\mu_{0} >0$; $\rho > 1$; $k = 0$
+\WHILE{not converged}
+\STATE $(L_{k+1}^{*}, S_{k+1}^{*}) = \underset{L,S}{\text{argmin   }}\mathcal{L}(L,S,Y_{k}^{*},\mu_{k})$
+\STATE $Y_{k+1}^{*} = Y_{k}^{*} + \mu_{k}(M-L_{k+1}^{*}-S_{k+1}^{*})$
+\STATE Update $\mu_{k}$ to $\mu_{k+1}$
+\ENDWHILE
+\RETURN $L_{k}, S_{k}$
+ \end{algorithmic}
+ \end{algorithm}
+The augmented Lagrangian multiplier method then involves solving the Lagrangian function as shown in the algorithm above. gi
+\subsection{Online RPCA Algorithms}
+
+
+\section{Preliminary results and comparisons}
+
+
+\section{Next steps}
+
+
+\iffalse
+
+\section{References}
+[1] \hspace*{8pt} E. Candes, X. Li, Y. Ma, and J. Wright, "Robust principal component analysis?," Journal of the ACM, vol. 58,
+no. 3, May 2011.
+
+[2] \hspace*{8pt}Online Robust PCA via Stochastic Optimization	(Feng, Xu and Yan, 2013). Reference: Feng, Jiashi, Huan Xu, and Shuicheng Yan. "Online robust pca via stochastic optimization." Advances in Neural Information Processing Systems. 2013.
+
+[3] \hspace*{8pt}P. Rodriguez and B. Wohlberg, "Fast principal component pursuit via alternating minimization," in IEEE ICIP, Melbourne, Australia, Sep. 2013, pp. 69–73.
+
+[4] \hspace*{8pt}Guyon, C., Bouwmans, T., and Zahzah, E. (2012). Robust Principal Component Analysis for Background Subtraction: Systematic Evaluation and Comparative Analysis.
+
+[5] \hspace*{8pt}Lin, Z., Ganesh, A., Wright, J., Wu, L., Chen, M., and Ma, Y. (2009). Fast convex optimization algorithms for exact recovery of a corrupted low-rank matrix. Intl. Workshop on Comp. Adv. in Multi-Sensor Adapt. Processing, Aruba, Dutch Antilles.
+
+[6] \hspace*{8pt}Jian Lai, Wee Kheng Leow, Terence Sim (2015). Incremental Fixed-Rank Robust PCA for Video Backgroud Recovery
+
+[7] \hspace*{8pt}Hongyuan Zha, Horst D. Simon (1999). On Updating Problems in Latent Semantic Indexing
+
+
+\fi
+
+
+\end{document}
+

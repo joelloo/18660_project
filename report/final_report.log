@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.8)  9 MAY 2018 18:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.8)  10 MAY 2018 00:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**progress_report.tex
-(./progress_report.tex
+**final_report.tex
+(./final_report.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 22 language(s) loaded.
 (/usr/local/texlive/2017basic/texmf-dist/tex/latex/base/article.cls
@@ -120,11 +120,39 @@ Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-\c@lecnum=\count100
-\c@theorem=\count101
+(./algorithmic.sty
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 
-(./progress_report.aux)
-\openout1 = `progress_report.aux'.
+(/usr/local/texlive/2017basic/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@ALC@unique=\count100
+\c@ALC@line=\count101
+\c@ALC@rem=\count102
+\c@ALC@depth=\count103
+\ALC@tlm=\skip46
+\algorithmicindent=\skip47
+)
+(./algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/local/texlive/2017basic/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count104
+\float@exts=\toks20
+\float@box=\box28
+\@float@everytoks=\toks21
+\@floatcapt=\box29
+)
+\@float@every@algorithm=\toks22
+\c@algorithm=\count105
+)
+\c@lecnum=\count106
+\c@theorem=\count107
+
+(./final_report.aux)
+\openout1 = `final_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
@@ -141,17 +169,17 @@ LaTeX Font Info:    ... okay on input line 101.
 
 (/usr/local/texlive/2017basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count102
+\scratchcounter=\count108
 \scratchdimen=\dimen114
-\scratchbox=\box28
-\nofMPsegments=\count103
-\nofMParguments=\count104
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count105
+\scratchbox=\box30
+\nofMPsegments=\count109
+\nofMParguments=\count110
+\everyMPshowfont=\toks23
+\MPscratchCnt=\count111
 \MPscratchDim=\dimen115
-\MPnumerator=\count106
-\makeMPintoPDFobject=\count107
-\everyMPtoPDFconversion=\toks21
+\MPnumerator=\count112
+\makeMPintoPDFobject=\count113
+\everyMPtoPDFconversion=\toks24
 ) (/usr/local/texlive/2017basic/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -221,91 +249,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 118--120
 [1
 
 {/usr/local/texlive/2017basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (33.0028pt too wide) in paragraph at lines 148--161
-\OML/cmm/m/it/10 L[] \OT1/cmr/m/n/10 = [][]$ and $\OML/cmm/m/it/10 S[] \OT1/cmr
-/m/n/10 = [][]$.
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 148--161
+Underfull \hbox (badness 10000) in paragraph at lines 125--140
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 162--164
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 166--168
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 169--171
-
- []
-
-<face.png, id=20, 462.528pt x 346.896pt>
-File: face.png Graphic file (type png)
- <use face.png>
-Package pdftex.def Info: face.png used on input line 173.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
-
-<highway.png, id=22, 462.528pt x 346.896pt>
-File: highway.png Graphic file (type png)
- <use highway.png>
-Package pdftex.def Info: highway.png used on input line 175.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
-
-<montage_fpcp.png, id=23, 462.528pt x 346.896pt>
-File: montage_fpcp.png Graphic file (type png)
- <use montage_fpcp.png>
-Package pdftex.def Info: montage_fpcp.png used on input line 176.
-(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
-
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 180--183
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 180--183
-
- []
-
-[4 <./face.png> <./highway.png> <./montage_fpcp.png>]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no “ in font cmr10!
- [5] [6]
-(./progress_report.aux) ) 
+[2] [3] (./final_report.aux) ) 
 Here is how much of TeX's memory you used:
- 2214 strings out of 494437
- 30488 string characters out of 6166646
- 99246 words of memory out of 5000000
- 5536 multiletter control sequences out of 15000+600000
- 8175 words of font info for 31 fonts, out of 8000000 for 9000
+ 2473 strings out of 494437
+ 33434 string characters out of 6166646
+ 96694 words of memory out of 5000000
+ 5788 multiletter control sequences out of 15000+600000
+ 7556 words of font info for 29 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 39i,13n,25p,1466b,166s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017basic/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017basic/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017basic/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017basic/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017basic/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017basic/texmf
--dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017basic/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017basic
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2017bas
-ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017b
-asic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texlive/2
-017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
-ve/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/te
-xlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on progress_report.pdf (6 pages, 771018 bytes).
+ 39i,13n,25p,1144b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017basic/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017basic/texmf-dist/font
+s/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017basic/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017basic/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017basic/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017basic/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017basi
+c/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017ba
+sic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texlive/20
+17basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
+e/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
+live/2017basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on final_report.pdf (3 pages, 130992 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 54 compressed objects within 1 object stream
+ 58 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

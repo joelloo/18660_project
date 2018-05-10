@@ -53,13 +53,7 @@ def test():
 
     for i in range(k0, n):
         d = M[:,i]
-        print "d----"
-        print d
         Lk, Sk, uk, sk, vk = incPCP_update(d, uk, sk, vk, lm, r, i)
-        print "Lk----"
-        print Lk
-        print "Sk----"
-        print Sk
         vk = vk.T
 
         if i%5 == 0:

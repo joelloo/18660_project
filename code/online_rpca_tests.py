@@ -151,8 +151,8 @@ plt.title('Runtime of update step for each frame')
 plt.legend(handles=[line1,line2], labels=['Inc Fast PCP', 'Inc Stoc RPCA'])
 plt.show()
 
-line1, = plt.plot(range(0,n), stoc_err)
-line2, = plt.plot(range(k0,n), fpcp_err)
+line1, = plt.semilogy(range(0,n), stoc_err)
+line2, = plt.semilogy(range(k0,n), fpcp_err)
 plt.xlabel('Frame no.')
 plt.ylabel('Error')
 plt.title('Decomposition error as frames are added')
@@ -162,7 +162,7 @@ plt.show()
 lines = []
 for i in range(5):
     err = am_err[i]
-    line, = plt.plot(range(len(err)), err)
+    line, = plt.semilogy(range(len(err)), err)
     lines.append(line)
 
 plt.xlabel('Inner loop iterations (alternating min)')

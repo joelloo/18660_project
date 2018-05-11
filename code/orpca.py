@@ -63,7 +63,7 @@ def solve_cvx(z,L,lm1,lm2):
     e = cvx.Variable(m)
     objective = cvx.Minimize(0.5*cvx.square(cvx.norm(z-L*x-e,2)) + 0.5*lm1*cvx.square(cvx.norm(x,2)) + lm2*cvx.norm(x,1))
     prob = cvx.Problem(objective)
-    prob.solve()
+    prob.solve(verbose=True)
     x = np.asarray(x.value)
     e = np.asarray(e.value)
     return x, e
